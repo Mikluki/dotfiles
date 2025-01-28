@@ -1,0 +1,108 @@
+{
+"justify_text": {
+  "prefix": "just",
+  "body": [
+    "<div style=\"text-align: justify\">  ",
+    "${1:example}",
+    "</div>",
+    ""
+  ],
+  "description": "justify_text"
+},
+"insert pic": {
+    "prefix": "pic",
+    "body": [
+        "<img src='pics/${1:p1.png}' width=${2:800}>"
+    ],
+    "description": "insert pic"
+},
+"pic_centered": {
+  "prefix": "pic1",
+  "body": [
+    "<div style=\"text-align:center\">",
+    "<img src='pics/p1.png' width=200>",
+    "</div>",
+    ""
+  ],
+  "description": "centered pic"
+},
+"pic_with_caption_center": {
+    "prefix": "pic2",
+    "body": [
+        "<p>",
+        "    <em>",
+        "        <p style='text-align: center;'>",
+        "        ${1:pic caption} </p>",
+        "    </em>",
+        "    <img src='${2:pic file name}' alt>",
+        "</p>"
+    ],
+    "description": "pic_with_caption_center"
+},
+"center_text": {
+    "prefix": "cent",
+    "body": [
+        "<p style=\"text-align: center;\">${1:example}</p>"
+    ],
+    "description": "center_text"
+},
+"insert tab": {
+    "prefix": "tt",
+    "body": [
+        "&emsp;"
+    ],
+    "description": "insert tab"
+},
+"insert link": {
+    "prefix": "link",
+    "body": [
+        "[${1:name}](${2:link})"
+    ],
+    "description": "insert link"
+},
+"link extended": {
+    "prefix": "lnk",
+    "body": [
+        "[${1:}](${2:})&emsp; ${3:} citations"
+    ],
+    "description": "link*"
+},
+
+"Latex_cases": {
+	"prefix": "cases",
+	"body": [
+		"$$",
+		"\\begin{cases}",
+		"${1:x}\\\\\\",
+		"${2:y}",
+		"\\end{cases}",
+		"$$"
+	],
+	"description": "Latex_cases"
+},
+"Latex_array_left_right": {
+	"prefix": "brac",
+	"body": [
+		"\\left${1:[}\\begin{array}{l}",
+		"${2:y =} \\\\\\ ${3:x =}",
+		"\\end{array}\\right."
+	],
+	"description": "Latex_array_left_right"
+},
+"insert newline": {
+    "prefix": "nn",
+    "body": [
+        "&nbsp;"
+    ],
+    "description": "insert newline"
+},
+"underline": {
+    "prefix": "und",
+    "body": [
+        "<u> ${1:underscored text} </u>"
+    ],
+    "description": "underline"
+}
+
+
+}

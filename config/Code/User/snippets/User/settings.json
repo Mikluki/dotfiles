@@ -1,0 +1,414 @@
+{
+    "workbench.preferredLightColorTheme": "Better Solarized Light",
+    "workbench.preferredDarkColorTheme": "Material Theme Palenight",
+    "terminal.integrated.allowChords": false,
+    "editor.lineNumbers": "relative",
+    "window.zoomLevel": 1.2,
+    "editor.fontSize": 15,
+    "debug.console.fontSize": 16,
+    "terminal.integrated.fontSize": 15,
+    "editor.cursorSurroundingLines": 5,
+    "files.insertFinalNewline": true,
+    "editor.tabSize": 4,
+    "files.trimTrailingWhitespace": true,
+    "editor.formatOnPaste": true,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "files.autoSave": "afterDelay",
+    "explorer.confirmDelete": false,
+    "workbench.iconTheme": "material-icon-theme",
+    "jupyter.askForKernelRestart": false,
+    "explorer.confirmDragAndDrop": false,
+    "editor.renderWhitespace": "none",
+    "window.menuBarVisibility": "toggle",
+    "editor.detectIndentation": false,
+    "notebook.lineNumbers": "on",
+    "notebook.globalToolbar": false,
+    "editor.fastScrollSensitivity": 10,
+    "editor.minimap.showSlider": "always",
+    "editor.minimap.renderCharacters": false, "markdown-pdf.convertOnSave": true,
+    "code-runner.runInTerminal": true,
+    "git.autofetch": true,
+    "markdown-preview-enhanced.chromePath": "/usr/bin/google-chrome",
+    "editor.suggest.showColors": false,
+    "editor.suggest.showClasses": true,
+    "editor.suggest.showDeprecated": false,
+    "editor.suggest.showCustomcolors": false,
+    "editor.suggest.showModules": true,
+    "editor.suggest.showOperators": true,
+    "editor.suggest.showReferences": true,
+    "editor.suggest.showStructs": true,
+    "editor.suggest.showValues": true,
+    "editor.suggest.showUnits": true,
+    "editor.suggest.showTypeParameters": true,
+    "editor.suggest.showUsers": true,
+    "editor.suggest.showProperties": true,
+    "editor.suggest.showIssues": false,
+    "editor.suggest.showEvents": true,
+    "editor.suggest.showEnumMembers": false,
+    "editor.suggest.showEnums": false,
+    "editor.suggest.showFields": true,
+    "editor.suggest.showMethods": true,
+    "editor.suggest.showKeywords": true,
+    "editor.parameterHints.enabled": true,
+    "path-intellisense.autoTriggerNextSuggestion": true,
+    "editor.acceptSuggestionOnCommitCharacter": false,
+    "path-intellisense.autoSlashAfterDirectory": true,
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.quickSuggestions": {
+        "comments": "off",
+        "other": "inline",
+        "strings": "inline"
+    },
+    "workbench.colorTheme": "Material Theme Palenight",
+
+    "workbench.colorCustomizations": {
+        // "Better Solarized Light": {
+        //     "foreground": "#B4BBC8",
+        //     "selection.background": "#5124B3A6",
+        //     "editor.background": "#262A30"
+        // },
+        // "Minimap color settings
+        "scrollbarSlider.activeBackground": "#625a3f",
+        "scrollbarSlider.hoverBackground": "#625a3f",
+        "scrollbarSlider.background": "#3f4c62",
+
+        "editorLineNumber.foreground": "#66739F",
+        "editorLineNumber.activeForeground": "#988AEB",
+
+        "editor.selectionBackground": "#88cbff6c", //Currently SELECTED text
+        "editor.selectionHighlightBackground": "#ffae005b", //Same content as selection
+        "editor.findMatchBackground": "#00cc44a8", //Current SEARCH MATCH
+        "editor.findMatchHighlightBackground": "#ff7b00a1", //Other SEARCH MATCHES
+        "editor.lineHighlightBackground": "#ff880013",
+    },
+    "cSpell.language": "en-GB,en-US,en",
+    "cSpell.enableFiletypes": [
+        "lua",
+        "markdown"
+    ],
+    "[markdown]": {
+        "files.trimTrailingWhitespace": true,
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    },
+    "editor.glyphMargin": false,
+    // "editor.folding": false,
+    "editor.scrollbar.verticalScrollbarSize": 1,
+    "editor.lineHeight": 0,
+    "markdown-preview-enhanced.previewTheme": "github-light.css",
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.terminal.executeInFileDir": true,
+    "MATLAB.matlabConnectionTiming": "onDemand",
+    "latex-workshop.bibtex-format.tab": "4 spaces",
+    "latex.linter.enabled": false,
+    "latex-workshop.linting.chktex.enabled": true,
+    "latex-workshop.viewer.pdf.internal.port": 0,
+    "[latex]": {
+        "editor.wordWrap": "on",
+        "editor.defaultFormatter": "James-Yu.latex-workshop"
+    },
+    "workbench.editor.empty.hint": "hidden",
+    "workbench.activityBar.location": "hidden",
+    "python.languageServer": "Pylance",
+    "black-formatter.args": [
+        "--line-length=88"
+    ],
+    "scm.inputFontSize": 15,
+    "markdownlint.config": {
+        "default": true,
+        "MD025": false,
+        "MD037": false,
+        "MD010": false,
+        "MD022": false,
+        "MD040": false,
+        "MD031": false,
+        "MD033": false,
+        "MD045": false,
+        "MD012": false,
+        "MD029": false,
+        "MD024": false,
+        "MD032": false,
+        "MD007": false,
+        "MD003": false,
+        "MD001": false,
+        "MD041": false,
+    },
+    "markdown.preview.fontSize": 16,
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "explorer.confirmPasteNative": false,
+    "terminal.integrated.commandsToSkipShell": [
+        "matlab.interrupt",
+        "language-julia.interrupt"
+    ],
+    "accessibility.signals.lineHasInlineSuggestion": {
+        "sound": "off"
+    },
+    "latex-workshop.latex.autoBuild.run":"never",
+    "latex-workshop.message.badbox.show": "none",
+    // "latex-workshop.message.latexlog.exclude": [
+    //     "10",
+    //     "46",
+    // ],
+    "latex-workshop.linting.chktex.exec.args": [
+        "-wall",
+        "-n22",
+        "-n30",
+        "-e16",
+        "-q",
+        "-n10",
+        "-n17",
+        "-n13",
+        "-n3"
+    ],
+    "github.copilot.editor.enableAutoCompletions": true,
+    "editor.tabCompletion": "on",
+    "telemetry.telemetryLevel": "off",
+    "MATLAB.telemetry": false,
+    "code-runner.enableAppInsights": false,
+    "explorer.incrementalNaming": "smart",
+
+    // === VIM CFG
+
+    "vim.leader": "<space>",
+
+    "vim.easymotion": true,
+    "vim.surround": true,
+
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    // "vim.incsearch": true // Show the next match while entering a search
+    "vim.hlsearch": true, // Highlight search
+
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "j"],
+            "after": ["<Esc>"]
+        }
+    ],
+    "vim.visualModeKeyBindings": [
+        {
+            "before": ["H"],
+            "after": ["^"]
+        },
+        {
+            "before": ["L"],
+            "after": ["$"]
+        },
+        { "before": ["<c-j>"], "after": ["<c-d>","z","z"] },
+        { "before": ["<c-k>"], "after": ["<c-u>","z","z"] },
+        // drag selected lines
+        {
+            "before": ["J"],
+            "commands": ["editor.action.moveLinesDownAction"]
+        },
+        {
+            "before": ["K"],
+            "commands": ["editor.action.moveLinesUpAction"]
+        },
+        // comment selected lines
+        {
+            "before": ["<leader>", "c"],
+            "commands": [ "editor.action.commentLine", "extension.vim_escape" ],
+        },
+        // Bind > and < in visual mode to indent/outdent lines (repeatable):
+        {
+            "before": [ ">" ],
+            "commands": ["editor.action.indentLines"]
+        },
+        {
+            "before": [ "<" ],
+            "commands": ["editor.action.outdentLines"]
+        },
+        // Bind p in visual mode to paste without overriding the current register:
+        {
+            "before": [
+                "p",
+            ],
+            "after": [
+                "p",
+                "g",
+                "v",
+                "y"
+            ]
+        },
+    ],
+        // Bind L to $ and H to ^ in operator pending mode makes yL and dH work like y$ and d^ respectively:
+    "vim.operatorPendingModeKeyBindings": [
+        {
+            "before": ["h"],
+            "after": ["^"]
+        },
+        {
+            "before": ["l"],
+            "after": ["$"]
+        },
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["H"],
+            "after": ["^"]
+        },
+        {
+            "before": ["L"],
+            "after": ["$"]
+        },
+        {
+            "before": ["j"],
+            "after": ["g","j"], "silent": true
+        },
+        {
+            "before": ["k"],
+            "after": ["g","k"], "silent": true
+        },
+        {
+            "before": ["<s-u>"],
+            "commands": [":redo"]
+        },
+        {
+            "before": ["<leader>", "c"],
+            "commands": [ "editor.action.commentLine"],
+        },
+        {
+            "before": ["<esc>"],
+            "commands": [":nohl"]
+        },
+        {
+            "before": ["K"],
+            "commands": ["lineBreakInsert"], "silent": true
+        },
+        {
+            "before": ["J"],
+            "after": ["m","z","J","`","z"], "silent": true
+        },
+        {
+            "before": ["Q"],
+            "after": ["@","q"], "silent": true
+        },
+
+        // INTELLISENSE
+        { "before": ["<leader>", "l", "f"], "commands": ["editor.action.formatDocument"] },
+        { "before": ["<leader>", "l", "k"], "commands": ["editor.action.marker.prev"] },
+        { "before": ["<leader>", "l", "j"], "commands": ["editor.action.marker.next"] },
+        { "before": ["<leader>", "l", "q"], "commands": ["editor.action.quickFix"] },
+
+        { "before": ["g", "h"], "commands": ["editor.action.showDefinitionPreviewHover"] },
+        { "before": ["<leader>", "g"], "commands": ["editor.action.revealDefinition"] },
+        // { "before": ["<leader>", "r"], "commands": ["workbench.action.showCommands"] },
+
+        // FILES
+        { "before": ["<leader>", "f", "r"], "commands": ["fileutils.renameFile"] },
+        { "before": ["<leader>", "f", "d"], "commands": ["fileutils.removeFile"] },
+        { "before": ["<leader>", "f", "n"], "commands": ["welcome.showNewFileEntries"] },
+
+        { "before": ["<leader>", "w"], "commands": [":w"] },
+        { "before": ["<leader>", "q"], "commands": [":wq"] },
+        { "before": ["<leader>", "x"], "commands": [":wq"] },
+        { "before": ["<leader>", "<Esc>"], "commands": [":q!"] },
+
+        // NAVIGATION
+        { "before": ["<leader>", ";"], "commands": ["editor.action.startFindReplaceAction"] },
+        // jumping up and down with centetering
+        { "before": ["<c-d>"], "after": ["<c-d>","z","z"] },
+        { "before": ["<c-u>"], "after": ["<c-u>","z","z"] },
+        { "before": ["<c-j>"], "after": ["<c-d>","z","z"] },
+        { "before": ["<c-k>"], "after": ["<c-u>","z","z"] },
+        // search with centering
+        { "before": ["n"], "after": ["n","z","z","z","v"] },
+        { "before": ["n"], "after": ["n","z","z","z","v"] },
+
+        // splits
+        { "before": ["<leader>", "b", "v"], "commands": [":vsplit"] },
+        { "before": ["<leader>", "b", "s"], "commands": [":split"] },
+
+        // GO TO FILE
+        { "before": ["<leader>", "p"], "commands": ["workbench.action.quickOpen"] },
+        { "before": ["<leader>", "s", "f"], "commands": ["workbench.action.quickOpen"] },
+
+        // // switch b/w buffers
+        { "before": ["<leader>", "f","h"], "commands": ["workbench.action.focusLeftGroup"] },
+        { "before": ["<leader>", "f","l"], "commands": ["workbench.action.focusRightGroup"] },
+        { "before": ["<leader>", "f","j"], "commands": ["workbench.action.focusBelowGroup"] },
+        { "before": ["<leader>", "f","k"], "commands": ["workbench.action.focusAboveGroup"] },
+
+        // panes
+        { "before": ["<leader>", "k"], "commands": [":bprevious"] },
+        { "before": ["<leader>", "j"], "commands": [":bnext"] },
+
+        // BOOKMARKS
+        { "before": ["<leader>", "m"], "commands": [ "bookmarks.toggle" ] },
+        { "before": ["<leader>", "b"], "commands": [ "bookmarks.list" ] },
+
+    ],
+    "vim.handleKeys": {
+        "<C-a>": false,
+        "<C-f>": false,
+        "<C-c>": false,
+        "<C-p>": false,
+        "<C-x>": false,
+        "<C-d>": false
+    },
+    // To improve performance
+    "extensions.experimental.affinity": {
+        "vscodevim.vim": 1
+    },
+    "zenMode.hideLineNumbers": false,
+    "julia.enableTelemetry": false,
+    "julia.symbolCacheDownload": true,
+    "julia.executablePath": "$HOME/.juliaup/bin/julia",
+    "julia.execution.saveOnEval": true,
+    "julia.persistentSession.shell": "/bin/zsh",
+    // "settingsSync.ignoredSettings": [
+    //     "-julia.executablePath"
+    // ],
+    "julia.lint.missingrefs": "symbols",
+    "editor.inlineSuggest.suppressSuggestions": true,
+    "julia.inlayHints.static.variableTypes.enabled": false,
+    "terminal.external.linuxExec": "/home/mik/.local/bin/kitty",
+    "jupyter.widgetScriptSources": [
+        "jsdelivr.com",
+        "unpkg.com"
+    ],
+    "wordcounter.include_eol_chars": false,
+    "wordcounter.side.left": [
+        "word"
+    ],
+    "cSpell.userWords": [
+        "absorp",
+        "Bezier",
+        "biconical",
+        "binded",
+        "color",
+        "Counterintuitively",
+        "functools",
+        "kohm",
+        "magmoms",
+        "mathrm",
+        "Mimimap",
+        "MIMO",
+        "multiband",
+        "overemphasizing",
+        "Perlin",
+        "pipx",
+        "polygonized",
+        "polygonizing",
+        "preemptively",
+        "pretrained",
+        "Rebeiz",
+        "skiprows",
+        "TLDR",
+        "Tucek",
+        "venvs",
+        "имплементацию"
+    ],
+    "github.copilot.enable": {
+        "markdown": true
+    },
+    "cSpell.useGitignore": false,
+    "notebook.markup.fontSize": 16,
+    "notebook.markdown.lineHeight": 24,
+    "breadcrumbs.enabled": false,
+    "cSpell.enabled": false,
+    "github.copilot.preferredAccount": "Mikluki"
+}

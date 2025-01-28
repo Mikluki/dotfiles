@@ -1,0 +1,277 @@
+{
+    "if": {
+        "prefix": "if",
+        "body": [
+            "if ${1:expression}:",
+            "\t${2:pass}"
+        ],
+        "description": "Code snippet for an if statement"
+    },
+    "if/else": {
+        "prefix": "if/else",
+        "body": [
+            "if ${1:condition}:",
+            "\t${2:pass}",
+            "else:",
+            "\t${3:pass}"
+        ],
+        "description": "Code snippet for an if statement with else"
+    },
+    "elif": {
+        "prefix": "elif",
+        "body": [
+            "elif ${1:expression}:",
+            "\t${2:pass}"
+        ],
+        "description": "Code snippet for an elif"
+    },
+    "else": {
+        "prefix": "else",
+        "body": [
+            "else:",
+            "\t${1:pass}"
+        ],
+        "description": "Code snippet for an else"
+    },
+    "while": {
+        "prefix": "while",
+        "body": [
+            "while ${1:expression}:",
+            "\t${2:pass}"
+        ],
+        "description": "Code snippet for a while loop"
+    },
+    "while/else": {
+        "prefix": "while/else",
+        "body": [
+            "while ${1:expression}:",
+            "\t${2:pass}",
+            "else:",
+            "\t${3:pass}"
+        ],
+        "description": "Code snippet for a while loop with else"
+    },
+    "for": {
+        "prefix": "for",
+        "body": [
+            "for ${1:target_list} in ${2:expression_list}:",
+            "\t${3:pass}"
+        ],
+        "description": "Code snippet for a for loop"
+    },
+    "for/else": {
+        "prefix": "for/else",
+        "body": [
+            "for ${1:target_list} in ${2:expression_list}:",
+            "\t${3:pass}",
+            "else:",
+            "\t${4:pass}"
+        ],
+        "description": "Code snippet for a for loop with else"
+    },
+    "try/except": {
+        "prefix": "try/except",
+        "body": [
+            "try:",
+            "\t${1:pass}",
+            "except ${2:expression} as ${3:identifier}:",
+            "\t${4:pass}"
+        ],
+        "description": "Code snippet for a try/except statement"
+    },
+    "try/finally": {
+        "prefix": "try/finally",
+        "body": [
+            "try:",
+            "\t${1:pass}",
+            "finally:",
+            "\t${2:pass}"
+        ],
+        "description": "Code snippet for a try/finally statement"
+    },
+    "try/except/else": {
+        "prefix": "try/except/else",
+        "body": [
+            "try:",
+            "\t${1:pass}",
+            "except ${2:expression} as ${3:identifier}:",
+            "\t${4:pass}",
+            "else:",
+            "\t${5:pass}"
+        ],
+        "description": "Code snippet for a try/except/else statement"
+    },
+    "try/except/finally": {
+        "prefix": "try/except/finally",
+        "body": [
+            "try:",
+            "\t${1:pass}",
+            "except ${2:expression} as ${3:identifier}:",
+            "\t${4:pass}",
+            "finally:",
+            "\t${5:pass}"
+        ],
+        "description": "Code snippet for a try/except/finally statement"
+    },
+    "try/except/else/finally": {
+        "prefix": "try/except/else/finally",
+        "body": [
+            "try:",
+            "\t${1:pass}",
+            "except ${2:expression} as ${3:identifier}:",
+            "\t${4:pass}",
+            "else:",
+            "\t${5:pass}",
+            "finally:",
+            "\t${6:pass}"
+        ],
+        "description": "Code snippet for a try/except/else/finally statement"
+    },
+    "with": {
+        "prefix": "with",
+        "body": [
+            "with ${1:expression} as ${2:target}:",
+            "\t${3:pass}"
+        ],
+        "description": "Code snippet for a with statement"
+    },
+    "def": {
+        "prefix": "def",
+        "body": [
+            "def ${1:funcname}(${2:parameter_list}):",
+            "\t${3:pass}"
+        ],
+        "description": "Code snippet for a function definition"
+    },
+    "def(class method)": {
+        "prefix": "def(class method)",
+        "body": [
+            "def ${1:funcname}(self, ${2:parameter_list}):",
+            "\t${3:pass}"
+        ],
+        "description": "Code snippet for a class method"
+    },
+    "def(static class method)": {
+        "prefix": "def(static class method)",
+        "body": [
+            "@staticmethod",
+            "def ${1:funcname}(${2:parameter_list}):",
+            "\t${3:pass}"
+        ],
+        "description": "Code snippet for a static class method"
+    },
+    "def(abstract class method)": {
+        "prefix": "def(abstract class method)",
+        "body": [
+            "def ${1:funcname}(self, ${2:parameter_list}):",
+            "\traise NotImplementedError"
+        ],
+        "description": "Code snippet for an abstract class method"
+    },
+    "class": {
+        "prefix": "class",
+        "body": [
+            "class ${1:classname}(${2:object}):",
+            "\t${3:pass}"
+        ],
+        "description": "Code snippet for a class definition"
+    },
+    "lambda": {
+        "prefix": "lambda",
+        "body": [
+            "lambda ${1:parameter_list}: ${2:expression}"
+        ],
+        "description": "Code snippet for a lambda statement"
+    },
+    "if(main)": {
+        "prefix": "__main__",
+        "body": [
+            "if __name__ == \"__main__\":",
+            "    ${1:pass}"
+        ],
+        "description": "Code snippet for a `if __name__ == \"__main__\": ...` block"
+    },
+    "plt_fig_save": {
+        "prefix": "plt_fig_save",
+        "body": [
+            "if save is True:",
+            "    fig.tight_layout()",
+            "    png_name = \"\"",
+            "    sub_dir = Path(root_dir, r\"plots\")",
+            "    sub_dir.mkdir(parents=True, exist_ok=True)",
+            "    png_path = Path(sub_dir, png_name)",
+            "    fig.savefig(png_path, bbox_inches=\"tight\")",
+            "    plt.close(fig)"
+        ],
+        "description": "plt_fig_save"
+    },
+    "save arrays list via pandas to csv": {
+    "prefix": "csv_save_pandas",
+    "body": [
+        "def arrays_2_csv(columns):",
+        "",
+        "    def get_var_name(var):",
+        "        for name, value in globals().items():",
+        "            if value is var:",
+        "                return name",
+        "        return None",
+        "",
+        "    df = pd.DataFrame({get_var_name(x): x for x in columns})",
+        "    df.to_csv(\"data.csv\", index=False)"
+    ],
+    "description": "save arrays via pandas to csv"
+    },
+
+    "csv swap separator": {
+        "prefix": "csv_readlines_swap",
+        "body": [
+            "def get_var_name(var):",
+            "    for name, value in globals().items():",
+            "        if value is var:",
+            "            return name",
+            "    return None",
+            "",
+            "",
+            "def arrays_2_csv(my_dict, csv_name=\"data.csv\"):",
+            "    df = pd.DataFrame(",
+            "        my_dict",
+            "    )",
+            "    df.to_csv(csv_name, index=False)",
+            "",
+            "",
+            "def split_strip(line, where_):",
+            "    return float(line.strip().split()[where_])",
+            "",
+            "",
+            "filepath = \"360_far_field_3D.txt\"",
+            "skip = 2",
+            "with open(filepath) as f:",
+            "    lines = f.readlines()",
+            "    theta_deg = [split_strip(s, 0) for s in lines[skip:]]",
+            "    phi_deg = [split_strip(s, 1) for s in lines[skip:]]",
+            "    abs_gain_dbi = [split_strip(s, 2) for s in lines[skip:]]",
+            "",
+            "    abs_left_dBi = [split_strip(s, 3) for s in lines[skip:]]",
+            "    phase_left_deg = [split_strip(s, 4) for s in lines[skip:]]",
+            "",
+            "    abs_right_dBi = [split_strip(s, 5) for s in lines[skip:]]",
+            "    phase_right_deg = [split_strip(s, 6) for s in lines[skip:]]",
+            "    ax_ratio_dB = [split_strip(s, 7) for s in lines[skip:]]",
+            "",
+            "data_columns = [",
+            "    theta_deg,",
+            "    phi_deg,",
+            "    abs_gain_dbi,",
+            "    abs_left_dBi,",
+            "    phase_left_deg,",
+            "    abs_right_dBi,",
+            "    phase_right_deg,",
+            "    ax_ratio_dB,",
+            "]",
+            "",
+            "my_dict = {get_var_name(elem): elem for elem in data_columns}",
+            "arrays_2_csv(my_dict)"
+        ],
+        "description": "csv swap separator"
+    },
+}

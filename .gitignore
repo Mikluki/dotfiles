@@ -1,0 +1,8 @@
+settings_n_keybindings/dconf
+**__pycache__**
+**spellright.dict
+**.png
+**.svg
+.vscode
+**/nvim/lazy-lock.json
+**nvim.sif

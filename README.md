@@ -46,34 +46,24 @@ Here are some tools that can significantly enhance your command-line experience:
  rustup update
 
  # Yazi
-
- ## Yazi is available as `yazi-fm` and `yazi-cli` on crates.io. To
-
- install them, setup the latest stable Rust toolchain via rustup:
-
+ ## Yazi is available as `yazi-fm` and `yazi-cli` on crates.io. To install them, setup the latest stable Rust toolchain via rustup:
+ ## If it fails to build, please check if make and gcc is installed on your system.
  cargo install --locked yazi-fm yazi-cli
 
- ## If it fails to build, please check if make and gcc is installed on your system.
-
  # ripgrep
-
  cargo install ripgrep
 
  # lsd
-
  cargo install lsd
 
  # zoxide
-
  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 
  # fzf
-
  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
  ~/.fzf/install
 
  # lazygit
-
  sudo apt install -y software-properties-common
  sudo add-apt-repository -y ppa:lazygit-team/release
  sudo apt update

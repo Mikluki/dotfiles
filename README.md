@@ -8,17 +8,18 @@ Follow the YouTube guides referenced below to get started quickly.
 
 ## Table of Contents
 
-1. [Kitty](#kitty)
+1. [Kitty](#kitty-and-zsh)
 2. [Tmux](#tmux)
 3. [Yazi](#yazi)
 4. [Neovim](#neovim)
    - [Base Configuration](#base)
    - [Plugins](#plugins)
    - [Features](#features)
+5. [Code](#visual-studio-code)
 
 ---
 
-## Kitty + zsh
+## Kitty and zsh
 
 Nothing too fancy. However, note that `tmux` does not support `super + key` inputs. Some of these bindings are instead assigned to the `F` row keys, which are supported.
 
@@ -34,51 +35,41 @@ Here are some tools that can significantly enhance your command-line experience:
 
 - **lazygit**: A simple terminal UI for Git commands. It provides a streamlined and intuitive way to manage branches, stage changes, and view logs without typing complex Git commands.
 
+<details><summary>Installation Steps</summary
+   
+ ```
+ sudo apt update
+ sudo apt install build-essential
+
+ # Rust
+ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+ rustup update
+
+ # Yazi
+ ## Yazi is available as `yazi-fm` and `yazi-cli` on crates.io. To install them, setup the latest stable Rust toolchain via rustup:
+ ## If it fails to build, please check if make and gcc is installed on your system.
+ cargo install --locked yazi-fm yazi-cli
+
+ # ripgrep
+ cargo install ripgrep
+
+ # lsd
+ cargo install lsd
+
+ # zoxide
+ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+
+ # fzf
+ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+ ~/.fzf/install
+
+ # lazygit
+ sudo apt install -y software-properties-common
+ sudo add-apt-repository -y ppa:lazygit-team/release
+ sudo apt update
+ sudo apt install -y lazygit
+ ```
 </details>
-    ```
-    sudo apt update
-    sudo apt install build-essential
-
-    # Rust
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    rustup update
-
-    # Yazi
-
-    ## Yazi is available as `yazi-fm` and `yazi-cli` on crates.io. To
-
-    install them, setup the latest stable Rust toolchain via rustup:
-
-    cargo install --locked yazi-fm yazi-cli
-
-    ## If it fails to build, please check if make and gcc is installed on your system.
-
-    # ripgrep
-
-    cargo install ripgrep
-
-    # lsd
-
-    cargo install lsd
-
-    # zoxide
-
-    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-
-    # fzf
-
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install
-
-    # lazygit
-
-    sudo apt install -y software-properties-common
-    sudo add-apt-repository -y ppa:lazygit-team/release
-    sudo apt update
-    sudo apt install -y lazygit
-    ```
-
-<details>
 
 ## Tmux
 
@@ -98,7 +89,7 @@ Plugins sometimes do not work when connected via SSH. I have not tackled this pr
 
 ## Neovim
 
-### Base Configuration
+### Base
 
 - [Josean's Neovim Setup with Blog Post](https://www.youtube.com/watch?v=6pAG3BHurdM)
 

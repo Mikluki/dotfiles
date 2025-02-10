@@ -1,0 +1,71 @@
+# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[manager]
+ratio          = [ 1, 2, 3 ]
+sort_dir_first = true
+
+[preview]
+max_width       = 900
+max_height      = 1000
+
+
+[opener]
+edit = [
+	{ run = '${EDITOR:-vi} "$@"',       desc = "$EDITOR", block = true, for = "unix" },
+]
+
+open = [
+	{ run = 'xdg-open "$1"',            desc = "Open",             for = "linux" },
+]
+
+code = [
+	{ run = 'code "$@"',       orphan = true, desc = "Code",for = "unix" },
+]
+
+sioyek = [
+	{ run = 'sioyek "$1"',     orphan = true,   desc = "Open with Sioyek", for = "linux" },
+]
+
+nomacs = [
+	{ run = 'nomacs "$1"',     orphan = true,   desc = "Open with Nomacs", for = "linux" },
+]
+
+eog = [
+	{ run = 'eog "$1"',        orphan = true,   desc = "Open with eog", for = "linux" },
+]
+
+inkscape = [
+	{ run = 'inkscape "$1"',   orphan = true,   desc = "Open with Inkscape", for = "linux" },
+]
+
+[open]
+rules = [
+    # Jupyter Notebook
+    { name ="*.ipynb", use = "code" },
+    # Folder
+    { name = "*/", use = [ "edit", "open", "reveal" ] },
+    # Text
+    { mime = "text/*", use = [ "edit", "code", "reveal" ] },
+    # Markdown
+    { name = "*.md", use = [ "edit", "reveal" ] },
+    # Svg
+    { mime = "image/svg+xml", use = [ "inkscape", "reveal" ] },
+    # Image
+    { mime = "image/*", use = [ "nomacs", "eog", "open", "reveal" ] },
+    # Media
+    { mime = "{audio,video}/*", use = [ "play", "reveal" ] },
+    # Archive
+    { mime = "application/{,g}zip", use = [ "extract", "reveal" ] },
+    { mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}", use = [ "extract", "reveal" ] },
+    # JSON
+    { mime = "application/{json,x-ndjson}", use = [ "edit", "reveal" ] },
+    { mime = "*/javascript", use = [ "edit", "reveal" ] },
+    # PDF
+    { name ="*.pdf",   use = "sioyek" },
+    # Empty file
+    { mime = "inode/x-empty", use = [ "edit", "reveal", "code" ] },
+    # Fallback
+    { name = "*", use = ["edit", "open", "reveal" ] },
+]

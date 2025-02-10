@@ -49,11 +49,35 @@ return {
 		}
 
 		-- configure lualine with modified theme
+
+		local function isRecording()
+			local reg = vim.fn.reg_recording()
+			if reg == "" then
+				return ""
+			end -- Not recording
+			local icon = " " -- Nerd Font camera icon
+			return icon .. "rec [" .. reg .. "]"
+		end
+
 		lualine.setup({
 			options = {
 				theme = my_lualine_theme,
 			},
 			sections = {
+				-- lualine_a = {'mode'},
+				-- lualine_b = {'branch', 'diff', 'diagnostics'},
+				-- lualine_x = {'encoding', 'fileformat', 'filetype'},
+				-- lualine_y = {'progress'},
+				-- lualine_z = {'location'}
+
+				lualine_c = {
+					"filename",
+					function()
+						return require("auto-session.lib").current_session_name(true)
+					end,
+					{ isRecording },
+				}, -- Add macro status here
+
 				lualine_x = {
 					{
 						lazy_status.updates,

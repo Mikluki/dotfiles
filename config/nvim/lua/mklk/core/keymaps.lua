@@ -25,8 +25,9 @@ keymap.set("n", "U", ":redo<CR>", opts)
 -- ### NAVIGATION ###
 -- keymap.set("n", "<leader>e", "<cmd>Explore<CR>", { desc = "Explorer" })
 keymap.set("n", "<leader>w", "<cmd>wa<CR>", { desc = "Save all" })
-keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Write & Close buffer" })
+keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Close buffer" })
 keymap.set("n", "<leader>Q", "<cmd>qa<CR>", { desc = "Close all" })
+keymap.set("n", "<leader>X", "<cmd>bufdo bd!<CR>", { desc = "Close all" })
 
 -- ### WINDOW MANAGEMENT ###
 -- ## SPLITS ##
@@ -35,6 +36,12 @@ keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) 
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
 keymap.set("n", "<leader>sd", "<cmd>tabnew %<CR>", { desc = "Duplicate current tab" }) --  move current buffer to new tab
+
+-- Resize splits using arrow keys + Control
+keymap.set("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase height" })
+keymap.set("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease height" })
+keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease width" })
+keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase width" })
 
 -- ## TABS ##
 keymap.set("n", "<leader>tt", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
@@ -70,6 +77,7 @@ keymap.set("o", "l", "$", opts)
 keymap.set("o", "h", "^", opts)
 
 -- ### CENTERING CONTENT ###
+
 -- centering jumps
 keymap.set("v", "gg", "ggzz", opts)
 keymap.set("n", "gg", "ggzz", opts)

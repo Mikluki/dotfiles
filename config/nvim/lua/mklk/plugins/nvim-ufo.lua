@@ -40,10 +40,10 @@ return {
 			require("ufo").setup(opts)
 
 			-- Keybindings
-			vim.keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open all folds" })
-			vim.keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close all folds" })
-			vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds, { desc = "Fold less" })
-			vim.keymap.set("n", "zm", require("ufo").closeAllFolds, { desc = "Fold more" })
+			vim.keymap.set("n", "zM", require("ufo").openAllFolds, { desc = "Open all folds" })
+			vim.keymap.set("n", "zm", require("ufo").openFoldsExceptKinds, { desc = "Fold less" })
+			vim.keymap.set("n", "zL", require("ufo").closeAllFolds, { desc = "Close all folds" })
+			vim.keymap.set("n", "zl", require("ufo").closeAllFolds, { desc = "Fold more" })
 			vim.keymap.set("n", "zp", require("ufo").peekFoldedLinesUnderCursor, { desc = "Peek fold" })
 		end,
 	},

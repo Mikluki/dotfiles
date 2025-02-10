@@ -18,6 +18,10 @@ return {
 						["<C-k>"] = actions.move_selection_previous, -- move to prev result
 						["<C-j>"] = actions.move_selection_next, -- move to next result
 						["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+						["<C-c>"] = actions.delete_buffer, -- Close selected buffer
+					},
+					n = {
+						["<C-c>"] = actions.delete_buffer, -- Close selected buffer
 					},
 				},
 			},
@@ -31,6 +35,7 @@ return {
 		-- Define a custom function to filter symbols
 
 		local telescope_builtin = require("telescope.builtin")
+		keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find buffers" })
 
 		keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
 		keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
@@ -40,7 +45,6 @@ return {
 		keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Find keymaps" })
 		keymap.set("n", "<leader>fx", "<cmd>Telescope diagnostics<cr>", { desc = "Find diagnostics" })
 		keymap.set("n", "<leader>f.", "<cmd>Telescope oldfiles<cr>", { desc = "Find keymaps" })
-		keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find buffers" })
 		keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find TODOs" })
 
 		keymap.set("n", "<leader>fn", function()
@@ -50,7 +54,13 @@ return {
 		-- Shortcut to search for Symbols in current file
 		local function filtered_document_symbols()
 			telescope_builtin.lsp_document_symbols({
-				symbols = { "method", "function", "class", "constant" },
+				symbols = {
+					"method",
+					"function",
+					"class",
+					--"constant",
+				},
+				sorting_strategy = "ascending", -- Ensures order follows LSP
 			})
 		end
 		keymap.set(

@@ -26,7 +26,15 @@ opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
 
 -- line wrapping & line break
--- opt.wrap = false -- disable line wrapping
+opt.wrap = false -- disable line wrapping
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		vim.wo.wrap = true -- Enable line wrapping
+		vim.wo.linebreak = true -- Prevent breaking words in the middle
+	end,
+})
+
 vim.opt.linebreak = true
 
 -- search settings

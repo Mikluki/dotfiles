@@ -28,8 +28,8 @@
     // Font settings
     "editor.lineDecorationsWidth": 5,
     "window.density.editorTabHeight": "compact",
-    "window.zoomLevel": 1.9,
-    "editor.fontSize": 14.5,
+    "window.zoomLevel": 1.5,
+    "editor.fontSize": 15.5,
     "editor.lineHeight": 19,
     "debug.console.fontSize": 15,
     "terminal.integrated.fontSize": 15,
@@ -327,9 +327,11 @@
         { "before": ["<leader>", "J"], "commands": ["editor.action.marker.next"] },
         { "before": ["<leader>", "F"], "commands": ["editor.action.quickFix"] },
 
+        // LSP
+        { "before": ["g", "r"], "commands": ["references-view.findReferences"] },
         { "before": ["g", "h"], "commands": ["editor.action.showDefinitionPreviewHover"] },
         { "before": ["<leader>", "g"], "commands": ["editor.action.revealDefinition"] },
-        // { "before": ["<leader>", "r"], "commands": ["workbench.action.showCommands"] },
+        { "before": ["<leader>", "s","r"], "commands": ["editor.action.rename"] },
 
         // FILES
         { "before": ["<leader>", "R"], "commands": ["fileutils.renameFile"] },
@@ -452,7 +454,6 @@
     "editor.fontFamily": "'Hack Nerd Font', 'Droid Sans Mono', 'monospace'",
     "window.menuBarVisibility": "toggle",
     "workbench.activityBar.location": "hidden",
-    "workbench.colorTheme": "GruvRice",
     "gruvboxMaterial.darkContrast": "soft",
     "gruvboxMaterial.darkPalette": "material",
     "editor.minimap.enabled": false,
@@ -473,4 +474,6 @@
     "breadcrumbs.showProperties": false,
     "breadcrumbs.showVariables": false,
     "breadcrumbs.showTypeParameters": false,
+    "workbench.colorTheme": "GruvRice",
+    // "workbench.colorTheme": "GruvRice",
 }

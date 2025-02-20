@@ -28,8 +28,8 @@
     // Font settings
     "editor.lineDecorationsWidth": 5,
     "window.density.editorTabHeight": "compact",
-    "window.zoomLevel": 1.5,
-    "editor.fontSize": 15.5,
+    "window.zoomLevel": 1.7,
+    "editor.fontSize": 14.0,
     "editor.lineHeight": 19,
     "debug.console.fontSize": 15,
     "terminal.integrated.fontSize": 15,

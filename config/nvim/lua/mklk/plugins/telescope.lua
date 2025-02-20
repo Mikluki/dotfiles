@@ -17,10 +17,13 @@ return {
 					i = {
 						["<C-k>"] = actions.move_selection_previous, -- move to prev result
 						["<C-j>"] = actions.move_selection_next, -- move to next result
-						["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+						["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+						["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
 						["<C-c>"] = actions.delete_buffer, -- Close selected buffer
 					},
 					n = {
+						["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+						["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
 						["<C-c>"] = actions.delete_buffer, -- Close selected buffer
 					},
 				},
@@ -37,19 +40,18 @@ return {
 		local telescope_builtin = require("telescope.builtin")
 		keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find buffers" })
 
-		keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
-		keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
+		keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files in cwd" })
+		keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Find recent files" })
 		keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
 		keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 
 		keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Find keymaps" })
 		keymap.set("n", "<leader>fx", "<cmd>Telescope diagnostics<cr>", { desc = "Find diagnostics" })
-		keymap.set("n", "<leader>f.", "<cmd>Telescope oldfiles<cr>", { desc = "Find keymaps" })
 		keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find TODOs" })
 
 		keymap.set("n", "<leader>fn", function()
 			telescope_builtin.find_files({ cwd = vim.fn.stdpath("config") })
-		end, { desc = "[S]earch [N]eovim files" })
+		end, { desc = "Find Neovim files" })
 
 		-- Shortcut to search for Symbols in current file
 		local function filtered_document_symbols()
@@ -91,6 +93,7 @@ return {
 			telescope_builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
 				winblend = 10,
 				previewer = false,
+				sorting_strategy = "ascending", -- Keeps order as in the buffer
 			}))
 		end, { desc = "[/] Fuzzily search in current buffer" })
 	end,

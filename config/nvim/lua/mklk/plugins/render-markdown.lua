@@ -8,6 +8,8 @@ return {
 	opts = {},
 	config = function()
 		require("render-markdown").setup({
+			latex = { enabled = false },
+			win_options = { conceallevel = { rendered = 2 } },
 			heading = {
 				backgrounds = {},
 				sign = false,
@@ -29,13 +31,16 @@ return {
 				enabled = true,
 				icons = { "", "", "◆", "◇" },
 				-- icons = { "●", "○", "◆", "◇" },
-				ordered_icons = function(level, index, value)
-					value = vim.trim(value)
-					local value_index = tonumber(value:sub(1, #value - 1))
-					return string.format("%d.", value_index > 1 and value_index or index)
+				ordered_icons = function(ctx)
+					local value = vim.trim(ctx.value)
+					local index = tonumber(value:sub(1, #value - 1))
+					return string.format("%d.", index > 1 and index or ctx.index)
 				end,
+				-- Padding to add to the left of bullet point
 				left_pad = 0,
+				-- Padding to add to the right of bullet point
 				right_pad = 0,
+				-- Highlight for the bullet icon
 				highlight = "RenderMarkdownBullet",
 			},
 			-- -- WITH BACKGROUND COLOR

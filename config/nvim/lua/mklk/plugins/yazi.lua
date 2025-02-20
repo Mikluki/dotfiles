@@ -6,7 +6,7 @@ return {
 		keys = {
 			-- 👇 in this section, choose your own keymappings!
 			{
-				"<leader>cf",
+				"<leader>e",
 				"<cmd>Yazi<cr>",
 				desc = "Open yazi at the current file",
 			},
@@ -18,9 +18,9 @@ return {
 			},
 			-- keymap.set("n", "<leader>e", "<cmd>Explore<CR>", { desc = "Explorer" })
 			{
-				"<leader>e",
+				"<leader>yr",
 				"<cmd>Yazi toggle<cr>",
-				desc = "Resume the last yazi session",
+				desc = "Yazi resume last session",
 			},
 			-- {
 			-- 	"<c-up>",

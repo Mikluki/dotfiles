@@ -25,17 +25,25 @@ opt.shiftwidth = 2 -- 2 spaces for indent width
 opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
 
--- line wrapping & line break
-opt.wrap = false -- disable line wrapping
+-- ### LINE WRAPPING & LINE BREAK ###
+local opt = vim.opt
+
+-- Global settings for line wrapping
+opt.wrap = false -- Disable wrapping globally
+opt.linebreak = true -- Prevent breaking words in the middle
+opt.breakindent = true -- Indent wrapped lines visually
+opt.showbreak = "  " -- Add visual indentation to wrapped lines
+
+-- FileType-specific settings for Markdown
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "markdown",
 	callback = function()
 		vim.wo.wrap = true -- Enable line wrapping
-		vim.wo.linebreak = true -- Prevent breaking words in the middle
+		vim.wo.linebreak = true -- Prevent word breaks
+		vim.wo.breakindent = true -- Maintain indentation on wrapped lines
+		vim.wo.showbreak = "  " -- Add indentation to wrapped lines
 	end,
 })
-
-vim.opt.linebreak = true
 
 -- search settings
 opt.ignorecase = true -- ignore case when searching

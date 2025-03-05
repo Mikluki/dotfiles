@@ -24,6 +24,15 @@ return {
 				filter = {
 					event = "msg_show",
 					kind = "",
+					find = ", job_id",
+				},
+				opts = { skip = true },
+			},
+			-- Suppress yanked messages
+			{
+				filter = {
+					event = "msg_show",
+					kind = "",
 					find = " lines yanked",
 				},
 				opts = { skip = true },

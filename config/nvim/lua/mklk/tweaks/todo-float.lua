@@ -92,10 +92,15 @@ local function setup_user_commands(opts)
 	vim.api.nvim_create_user_command("FloatToDo", function()
 		open_floating_file("~/data/second-brain/ToDo.md")
 	end, {})
+
+	vim.api.nvim_create_user_command("FloatToDoSelf", function()
+		open_floating_file("~/data/second-brain/vault-self/ToDo.md")
+	end, {})
 end
 
 local function setup_keymaps()
 	vim.keymap.set("n", "<leader>td", ":FloatToDo<CR>", { silent = true })
+	vim.keymap.set("n", "<leader>ts", ":FloatToDoSelf<CR>", { silent = true })
 	vim.keymap.set("n", "<leader>tl", ":FloatToDoLocal<CR>", { silent = true })
 end
 

@@ -11,13 +11,14 @@ return {
 			latex = { enabled = false },
 			win_options = { conceallevel = { rendered = 2 } },
 			heading = {
+				enabled = true,
 				backgrounds = {},
 				sign = false,
-				border = true,
+				border = false,
 				below = "▔",
 				above = "▁",
 				left_pad = 0,
-				position = "left",
+				position = "inline",
 				icons = {
 					" ",
 					" ",

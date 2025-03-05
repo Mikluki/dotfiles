@@ -12,10 +12,16 @@ return {
 		vim.api.nvim_set_keymap("n", "<leader>mq", ":MarkdownPreviewStop<CR>", { noremap = true, silent = true })
 
 		-- Define OpenMarkdownPreview function
+		-- vim.cmd([[
+		-- 	function! OpenMarkdownPreview(url)
+		-- 		call jobstart(["brave-browser", "--new-window", a:url], {"detach": v:true})
+		-- 	endfunction
+		-- ]])
+
 		vim.cmd([[
-			function! OpenMarkdownPreview(url)
-				call jobstart(["brave-browser", "--new-window", a:url], {"detach": v:true})
-			endfunction
+      function! OpenMarkdownPreview(url)
+          call jobstart(["brave-browser", "--app=" . a:url], {"detach": v:true})
+      endfunction
 		]])
 
 		-- Set the function for markdown-preview.nvim

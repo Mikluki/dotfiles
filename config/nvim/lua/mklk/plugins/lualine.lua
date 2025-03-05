@@ -3,7 +3,7 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
 		local lualine = require("lualine")
-		local lazy_status = require("lazy.status") -- to configure lazy pending updates count
+		-- local lazy_status = require("lazy.status") -- to configure lazy pending updates count
 
 		local colors = {
 			blue = "#a99a85",
@@ -99,7 +99,10 @@ return {
 					-- 		return format
 					-- 	end,
 					-- },
-					{ "filetype" },
+					{
+						"filetype",
+						icon_only = true, -- Display only an icon for filetype
+					},
 				},
 			},
 		})

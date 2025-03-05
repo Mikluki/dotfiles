@@ -32,8 +32,9 @@ return {
 				"pyright",
 				-- "pylint",
 				-- "ruff",
-				-- "cssls",
-				-- "tsserver",
+				"cssls",
+				"eslint", -- ESLint LSP for linting
+				"ts_ls", -- TypeScript/JavaScript LSP
 				-- "tailwindcss",
 				-- "svelte",
 				-- "graphql",
@@ -44,12 +45,11 @@ return {
 
 		mason_tool_installer.setup({
 			ensure_installed = {
-				"prettier", -- prettier formatter
-				"stylua", -- lua formatter
-				"isort", -- python formatter
-				"black", -- python formatter
-				-- "pylint", -- python linter
-				-- "eslint_d", -- js linter
+				"prettier", -- Prettier formatter
+				"stylua", -- Lua formatter
+				"isort", -- Python formatter
+				"black", -- Python formatter
+				"eslint_d", -- Faster ESLint daemon
 			},
 		})
 	end,

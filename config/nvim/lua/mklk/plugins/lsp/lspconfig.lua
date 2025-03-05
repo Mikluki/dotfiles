@@ -122,21 +122,60 @@ return {
 					capabilities = capabilities,
 				})
 			end,
-			-- ["svelte"] = function()
-			--   -- configure svelte server
-			--   lspconfig["svelte"].setup({
-			--     capabilities = capabilities,
-			--     on_attach = function(client, bufnr)
-			--       vim.api.nvim_create_autocmd("BufWritePost", {
-			--         pattern = { "*.js", "*.ts" },
-			--         callback = function(ctx)
-			--           -- Here use ctx.match instead of ctx.file
-			--           client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-			--         end,
-			--       })
-			--     end,
-			--   })
-			-- end,
+
+			["svelte"] = function()
+				-- configure svelte server
+				lspconfig["svelte"].setup({
+					capabilities = capabilities,
+					on_attach = function(client, bufnr)
+						vim.api.nvim_create_autocmd("BufWritePost", {
+							pattern = { "*.js", "*.ts" },
+							callback = function(ctx)
+								-- Here use ctx.match instead of ctx.file
+								client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+							end,
+						})
+					end,
+				})
+			end,
+
+			["ts_ls"] = function()
+				lspconfig.ts_ls.setup({
+					capabilities = capabilities,
+					filetypes = {
+						"javascript",
+						"javascriptreact",
+						"javascript.jsx",
+						"typescript",
+						"typescriptreact",
+						"typescript.tsx",
+					},
+					root_dir = function(fname)
+						return require("lspconfig.util").root_pattern("tsconfig.json")(fname)
+							or require("lspconfig.util").root_pattern("package.json", "jsconfig.json", ".git")(fname)
+					end,
+					single_file_support = true,
+					on_attach = function(client, bufnr)
+						-- Disable built-in formatting in favor of external formatters like Prettier
+						client.server_capabilities.documentFormattingProvider = false
+					end,
+				})
+			end,
+
+			["eslint"] = function()
+				-- configure ESLint server
+				lspconfig["eslint"].setup({
+					capabilities = capabilities,
+					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+					on_attach = function(client, bufnr)
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							buffer = bufnr,
+							command = "EslintFixAll", -- Auto-fix on save
+						})
+					end,
+				})
+			end,
+
 			-- ["graphql"] = function()
 			--   -- configure graphql language server
 			--   lspconfig["graphql"].setup({

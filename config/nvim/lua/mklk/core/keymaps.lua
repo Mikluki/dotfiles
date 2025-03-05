@@ -4,27 +4,27 @@ vim.g.mapleader = " "
 local keymap = vim.keymap -- for conciseness
 local opts = { noremap = true, silent = true }
 
----------------------------
--- ### GENERAL KEYMAPS ###--
+--=========================--
+-- ### GENERAL KEYMAPS ### --
 
 -- use jj tofexit insert mode
 keymap.set("i", "jj", "<ESC>", { desc = "Exit insert mode with jj" })
 
 -- clear search highlights
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
-keymap.set("n", "<ESC>", ":nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<leader>nh", "<cmd>nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<ESC>", "<cmd>nohl<CR>", { desc = "Clear search highlights" })
 
 -- delete single character without copying into register
 -- keymap.set("n", "x", '"_x')
---
+
 -- Paste without overwrite
 keymap.set("v", "p", "P", opts)
 -- Undo quicker
-keymap.set("n", "U", ":redo<CR>", opts)
+keymap.set("n", "U", "<cmd>redo<CR>", opts)
 
 -- ### QUICKFIX
-keymap.set("n", "<leader>j", "<cmd>cnext<CR>", { desc = "Quickfix Next" })
-keymap.set("n", "<leader>k", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
+keymap.set("n", "<leader>jj", "<cmd>cnext<CR>", { desc = "Quickfix Next" })
+keymap.set("n", "<leader>kk", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
 keymap.set("n", "<leader>cj", "<cmd>cnext<CR>", { desc = "Quickfix Next" })
 keymap.set("n", "<leader>ck", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
 keymap.set("n", "<leader>co", "<cmd>copen<CR>", { desc = "Quickfix Open" })
@@ -46,16 +46,15 @@ keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }
 keymap.set("n", "<leader>sd", "<cmd>tabnew %<CR>", { desc = "Duplicate current tab" }) --  move current buffer to new tab
 
 -- Resize splits using arrow keys + Control
-keymap.set("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase height" })
-keymap.set("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease height" })
-keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease width" })
-keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase width" })
+keymap.set("n", "<C-Up>", "<cmd>resize +2<CR>", { desc = "Increase height" })
+keymap.set("n", "<C-Down>", "<cmd>resize -2<CR>", { desc = "Decrease height" })
+keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { desc = "Decrease width" })
+keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase width" })
 
 -- ## TABS ##
 keymap.set("n", "<leader>tt", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
 keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
 keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
--- keymap.set("n", "<leader>x", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
 keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 -- keymap.set("n", "<leader>td", "<cmd>tabnew %<CR>", { desc = "Duplicate current tab" }) --  move current buffer to new tab
@@ -64,7 +63,12 @@ keymap.set("n", "<M-k>", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to
 keymap.set("n", "<M-j>", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 
 -- ## REPLACE SELECTION ##
-keymap.set("v", "<C-r>", '"hy:%s/<C-r>h//gc<left><left><left>', opts)
+keymap.set(
+	"v",
+	"<leader>s",
+	'"hy:%s/<C-r>h//gc<left><left><left>',
+	{ noremap = true, silent = true, desc = "substitute selection" }
+)
 
 -- Run macro bound to q with Q
 keymap.set("n", "Q", "@q", opts)
@@ -81,8 +85,18 @@ keymap.set("n", "H", "^", opts)
 keymap.set("v", "L", "$", opts)
 keymap.set("v", "H", "^", opts)
 
-keymap.set("o", "l", "$", opts)
-keymap.set("o", "h", "^", opts)
+local function conditional_map(key, replacement)
+	return function()
+		local op = vim.v.operator
+		if op == "d" or op == "y" then
+			return replacement
+		end
+		return key
+	end
+end
+
+keymap.set("o", "l", conditional_map("l", "$"), { expr = true })
+keymap.set("o", "h", conditional_map("h", "^"), { expr = true })
 
 -- ### CENTERING CONTENT ###
 -- centering jumps
@@ -94,16 +108,65 @@ keymap.set("n", "n", "nzzzv", opts)
 keymap.set("n", "N", "Nzzzv", opts)
 
 -- Keep the cursor in the same place when joining or breaking lines
-keymap.set("n", "J", "mzJ`z", opts)
-keymap.set("n", "K", "mzi<CR><Esc>`z", opts)
+keymap.set("n", "J", "mzgJ`z", { noremap = true, silent = true, desc = "Join lines" })
+keymap.set("n", "K", "mza<CR><Esc>`z", { noremap = true, silent = true, desc = "Break line" })
 
--- ###################
--- ### CUSTOM UTIL ###
--- ###################
+-- #######################
+-- ##### CUSTOM UTIL #####
+-- #######################
+
+-- ### FILES & BUFFERS ###
+-- Delete current file in buffer with confirmation and clse buffer
+keymap.set(
+	"n",
+	"<Leader>df",
+	[[:lua DeleteCurrentFile()<CR>]],
+	{ noremap = true, silent = true, desc = "Delete current File" }
+)
+
+function DeleteCurrentFile()
+	local file = vim.fn.expand("%") -- Get current file name
+	if file == "" or vim.fn.filereadable(file) == 0 then
+		print("No valid file to delete.")
+		return
+	end
+
+	local confirm = vim.fn.input("Delete " .. file .. "? (y/n) ")
+	if confirm == "y" then
+		vim.fn.system("rm " .. vim.fn.shellescape(file)) -- Delete file safely
+		vim.cmd("bdelete!") -- Close buffer
+		print("File deleted: " .. file)
+	else
+		print("File deletion cancelled.")
+	end
+end
 
 -- ### MARKDOWN ###
+---------------------------
+-- TOGGLE MARKDOWN CHECKBOX
+keymap.set(
+	"n",
+	"<leader>mt",
+	[[<cmd>lua ToggleMarkdownCheckbox()<CR>]],
+	{ noremap = true, silent = true, desc = " Md toggle checkbox" }
+)
+
+function ToggleMarkdownCheckbox()
+	local line = vim.api.nvim_get_current_line()
+	local new_line = line
+
+	if string.match(line, "%- %[ %]") then
+		new_line = string.gsub(line, "%- %[ %]", "- [x]")
+	elseif string.match(line, "%- %[x%]") then
+		new_line = string.gsub(line, "%- %[x%]", "- [ ]")
+	end
+
+	vim.api.nvim_set_current_line(new_line)
+end
+
+-----------------------------------------------------------
 -- FUNCTION TO SUBSTITUTE LATEX MATH DELIMITERS IN MARKDOWN
-function AnnotateLatex()
+function MdFormatLatex()
 	local start_pos, end_pos
 	local mode = vim.fn.mode()
 
@@ -138,50 +201,16 @@ function AnnotateLatex()
 end
 
 -- Keymap for normal mode: apply on whole file
-vim.api.nvim_set_keymap("n", "<leader>mf", ":lua AnnotateLatex()<CR>", { noremap = true, silent = true })
--- Keymap for visual mode: apply only to selected text
-vim.api.nvim_set_keymap("v", "<leader>mf", ":lua AnnotateLatex()<CR>", { noremap = true, silent = true })
-
--- COMPILE MARKDOWN TO PDF arial
-function CompileMarkdownToPDFArial()
-	local input_file = vim.fn.expand("%:p") -- Get full path of the current file
-	local input_dir = vim.fn.expand("%:p:h") -- Get directory of the current file
-	local output_file = input_file:gsub("%.md$", ".pdf") -- Change extension to .pdf
-
-	-- Run Pandoc asynchronously to generate PDF
-	vim.fn.jobstart({
-		"pandoc",
-		input_file,
-		"-o",
-		output_file,
-		"--pdf-engine=xelatex",
-		"-V",
-		"mainfont=Arial",
-		"-V",
-		"geometry=margin=0.5in", -- Add this line for margins
-		"--resource-path=" .. input_dir, -- Add resource path
-	}, {
-		detach = true,
-		cwd = input_dir, -- Set working directory
-		on_exit = function(_, code, _)
-			if code == 0 then
-				print("PDF compiled successfully: " .. output_file)
-			else
-				print("Error compiling PDF.")
-			end
-		end,
-	})
-end
-
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>mca",
-	[[<cmd>lua CompileMarkdownToPDFArial()<CR>]],
-	{ noremap = true, silent = true, desc = "Compile Markdown to pdf (narrow Arial)" }
+vim.keymap.set(
+	{ "v", "n" },
+	"<leader>mf",
+	"<cmd>lua MdFormatLatex()<CR>",
+	{ noremap = true, silent = true, desc = "Format MD math to Tex math" }
 )
 
+-----------------------------------------
 -- COMPILE MARKDOWN TO PDF standard arial
-function CompileMarkdownToPDFArial()
+function MdCompileArial()
 	local input_file = vim.fn.expand("%:p") -- Get full path of the current file
 	local input_dir = vim.fn.expand("%:p:h") -- Get directory of the current file
 	local output_file = input_file:gsub("%.md$", ".pdf") -- Change extension to .pdf
@@ -210,15 +239,99 @@ function CompileMarkdownToPDFArial()
 	})
 end
 
-vim.api.nvim_set_keymap(
+keymap.set(
 	"n",
 	"<leader>mcs",
-	[[<cmd>lua CompileMarkdownToPDFArial()<CR>]],
-	{ noremap = true, silent = true, desc = "Compile Markdown to pdf (standard Arial)" }
+	[[<cmd>lua MdCompileArial()<CR>]],
+	{ noremap = true, silent = true, desc = "Compile MD to pdf (standard Arial)" }
 )
 
+--------------------------------
+-- COMPILE MARKDOWN TO PDF arial
+function MdCompileArialNarrow()
+	local input_file = vim.fn.expand("%:p") -- Get full path of the current file
+	local input_dir = vim.fn.expand("%:p:h") -- Get directory of the current file
+	local output_file = input_file:gsub("%.md$", ".pdf") -- Change extension to .pdf
+
+	-- Run Pandoc asynchronously to generate PDF
+	vim.fn.jobstart({
+		"pandoc",
+		input_file,
+		"-o",
+		output_file,
+		"--pdf-engine=xelatex",
+		"-V",
+		"mainfont=Arial",
+		"--variable",
+		"geometry:margin=0.7in",
+		"--resource-path=" .. input_dir, -- Add resource path
+	}, {
+		detach = true,
+		cwd = input_dir, -- Set working directory
+		on_exit = function(_, code, _)
+			if code == 0 then
+				print("PDF compiled successfully: " .. output_file)
+			else
+				print("Error compiling PDF.")
+			end
+		end,
+	})
+end
+
+keymap.set(
+	"n",
+	"<leader>mca",
+	[[<cmd>lua MdCompileArialNarrow()<CR>]],
+	{ noremap = true, silent = true, desc = "Compile MD to pdf (narrow Arial)" }
+)
+
+-------------------------------------
+-- COMPILE MARKDOWN TO PDF HEADER.TEX
+function MdCompileHeaderTex()
+	local input_file = vim.fn.expand("%:p")
+	local input_dir = vim.fn.expand("%:p:h")
+	local output_file = input_file:gsub("%.md$", ".pdf")
+	local header_file = input_dir .. "/header.tex"
+
+	-- Check if header.tex exists
+	if vim.fn.filereadable(header_file) == 0 then
+		print("Error: header.tex not found in " .. input_dir)
+		return
+	end
+
+	-- Run Pandoc asynchronously to generate PDF
+	vim.fn.jobstart({
+		"pandoc",
+		input_file,
+		"-o",
+		output_file,
+		"--pdf-engine=xelatex",
+		"-V",
+		"mainfont=Arial",
+		"--include-in-header=header.tex",
+	}, {
+		detach = true,
+		cwd = input_dir,
+		on_exit = function(_, code, _)
+			if code == 0 then
+				print("PDF compiled successfully: " .. output_file)
+			else
+				print("Error compiling PDF.")
+			end
+		end,
+	})
+end
+
+keymap.set(
+	"n",
+	"<leader>mch",
+	[[<cmd>lua MdCompileHeaderTex()<CR>]],
+	{ noremap = true, silent = true, desc = "Compile MD to pdf [include header.tex]" }
+)
+
+-----------------------------------
 -- COMPILE MARKDOWN TO PDF via HTML
-function CompileMarkdownToPDFHTML()
+function MdCompileWebHtml()
 	local input_file = vim.fn.expand("%:p")
 	local input_dir = vim.fn.expand("%:p:h")
 	local output_file = input_file:gsub("%.md$", ".pdf")
@@ -244,37 +357,11 @@ function CompileMarkdownToPDFHTML()
 	})
 end
 
-vim.api.nvim_set_keymap(
+keymap.set(
 	"n",
-	"<leader>mch",
-	[[<cmd>lua CompileMarkdownToPDFHTML()<CR>]],
-	{ noremap = true, silent = true, desc = "Compile Markdown to PDF (HTML engine)" }
-)
-
--- MARKDOWN SNIPPET FOR TWO FIGURES SIDE BY SIDE
-vim.api.nvim_create_user_command("MarkdownTwoFigures", function()
-	local snippet = [[::: {#fig:subfigs layout-ncol=2}
-![Left image](image1.png){width=380px #fig:left}
-![Right image](image2.png){width=380px #fig:right}
-:::]]
-
-	-- Get current cursor position
-	local pos = vim.api.nvim_win_get_cursor(0)
-	local row = pos[1] - 1
-
-	-- Insert the snippet
-	vim.api.nvim_buf_set_lines(0, row, row, false, vim.split(snippet, "\n"))
-
-	-- Move cursor to the first image path
-	vim.api.nvim_win_set_cursor(0, { row + 2, 12 }) -- Position after "![Left image]("
-end, {})
-
--- Create the keybinding
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>m2f",
-	":MarkdownTwoFigures<CR>",
-	{ noremap = true, silent = true, desc = "Insert two figures side by side" }
+	"<leader>mcw",
+	[[<cmd>lua MdCompileWebHtml()<CR>]],
+	{ noremap = true, silent = true, desc = "Compile MD to PDF [Web html]" }
 )
 
 -- OPEN IN SIOYEK
@@ -291,7 +378,7 @@ function OpenPDFWithSioyek()
 	end
 end
 
-vim.api.nvim_set_keymap(
+keymap.set(
 	"n",
 	"<leader>ms",
 	[[<cmd>lua OpenPDFWithSioyek()<CR>]],
@@ -313,10 +400,10 @@ keymap.set(
 )
 
 -- OPEN NEMO AT CURRENT FILE
-vim.api.nvim_set_keymap(
+keymap.set(
 	"n",
-	"<leader>on",
-	[[:lua OpenNemoAtFile()<CR>]],
+	"<leader>nm",
+	[[<cmd>lua OpenNemoAtFile()<CR>]],
 	{ noremap = true, silent = true, desc = "Open Nemo at current file location" }
 )
 
@@ -326,12 +413,12 @@ function OpenNemoAtFile()
 		print("No file opened")
 		return
 	end
-	local dir = vim.fn.fnamemodify(filepath, ":h")
+	local dir = vim.fn.fnamemodify(filepath, "<cmd>h")
 	vim.fn.jobstart({ "nemo", dir }, { detach = true })
 end
 
 -- RUN PYTHON ON THE RIGHT
-vim.api.nvim_set_keymap(
+keymap.set(
 	"n",
 	"<leader>pp",
 	[[<cmd>lua OpenTmuxPaneAndRunPython()<CR>]],
@@ -359,5 +446,5 @@ keymap.set(
 	"n",
 	"<leader>gs",
 	[[:<C-u>lua local query = vim.fn.getreg('"'):gsub(" ", "%%20"); vim.fn.system("xdg-open 'https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=" .. query .. "&btnG='")<CR>]],
-	{ noremap = true, silent = true, desc = "Google scholar yanked text" }
+	{ noremap = true, silent = true, desc = "Google Scholar yanked text" }
 )

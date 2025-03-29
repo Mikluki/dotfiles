@@ -23,17 +23,26 @@ keymap.set("v", "p", "P", opts)
 keymap.set("n", "U", "<cmd>redo<CR>", opts)
 
 -- ### QUICKFIX
+-- next item
 keymap.set("n", "<leader>jj", "<cmd>cnext<CR>", { desc = "Quickfix Next" })
+keymap.set("n", "<leader>cn", "<cmd>cnext<CR>", { desc = "Quickfix Next" })
+-- prev item
 keymap.set("n", "<leader>kk", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
-keymap.set("n", "<leader>cj", "<cmd>cnext<CR>", { desc = "Quickfix Next" })
-keymap.set("n", "<leader>ck", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
+keymap.set("n", "<leader>cp", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
+-- first item
+keymap.set("n", "<leader>cf", "<cmd>cfirst<CR>", { desc = "Quickfix Prev" })
+-- last item
+keymap.set("n", "<leader>cl", "<cmd>clast<CR>", { desc = "Quickfix Prev" })
+-- cdo
+keymap.set("n", "<leader>cd", ":cdo ", { desc = "Quickfix Prev" })
+-- open & close
 keymap.set("n", "<leader>co", "<cmd>copen<CR>", { desc = "Quickfix Open" })
 keymap.set("n", "<leader>cc", "<cmd>cclose<CR>", { desc = "Quickfix Close" })
 
 -- ### BUFFER SAVE & CLOSE ###
 -- keymap.set("n", "<leader>e", "<cmd>Explore<CR>", { desc = "Explorer" })
 keymap.set("n", "<leader>w", "<cmd>wa<CR>", { desc = "Save all" })
-keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Close buffer" })
+keymap.set("n", "<leader>q", "<cmd>bd<CR>", { desc = "Close buffer" })
 keymap.set("n", "<leader>Q", "<cmd>qa<CR>", { desc = "Close all" })
 keymap.set("n", "<leader>X", "<cmd>bufdo bd!<CR>", { desc = "Close all" })
 
@@ -41,15 +50,54 @@ keymap.set("n", "<leader>X", "<cmd>bufdo bd!<CR>", { desc = "Close all" })
 -- ## SPLITS ##
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
-keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
 keymap.set("n", "<leader>sd", "<cmd>tabnew %<CR>", { desc = "Duplicate current tab" }) --  move current buffer to new tab
 
 -- Resize splits using arrow keys + Control
+keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
 keymap.set("n", "<C-Up>", "<cmd>resize +2<CR>", { desc = "Increase height" })
 keymap.set("n", "<C-Down>", "<cmd>resize -2<CR>", { desc = "Decrease height" })
 keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { desc = "Decrease width" })
 keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase width" })
+
+-- DIFF SPLIT VERTICAL
+vim.keymap.set("n", "<leader>dv", function()
+	local cur_win = vim.api.nvim_get_current_win()
+	local wins = vim.api.nvim_tabpage_list_wins(0)
+
+	-- Sort windows left-to-right by their column position
+	table.sort(wins, function(a, b)
+		local a_pos = vim.api.nvim_win_get_position(a)[2]
+		local b_pos = vim.api.nvim_win_get_position(b)[2]
+		return a_pos < b_pos
+	end)
+
+	if #wins < 2 then
+		print("Need at least 2 vertical splits.")
+		return
+	end
+
+	-- Only apply to the two left-most windows
+	vim.api.nvim_set_current_win(wins[1])
+	vim.cmd("diffthis")
+	vim.api.nvim_set_current_win(wins[2])
+	vim.cmd("diffthis")
+
+	-- Restore the original window focus
+	vim.api.nvim_set_current_win(cur_win)
+end, { desc = "Diff left and right vertical splits", noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>do", function()
+	local cur_win = vim.api.nvim_get_current_win()
+	local wins = vim.api.nvim_tabpage_list_wins(0)
+
+	for _, win in ipairs(wins) do
+		vim.api.nvim_set_current_win(win)
+		vim.cmd("diffoff")
+	end
+
+	vim.api.nvim_set_current_win(cur_win)
+end, { desc = "Turn off diff in all splits", noremap = true, silent = true })
 
 -- ## TABS ##
 keymap.set("n", "<leader>tt", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
@@ -65,6 +113,12 @@ keymap.set("n", "<M-j>", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  g
 -- ## REPLACE SELECTION ##
 keymap.set(
 	"v",
+	"<C-r>",
+	'"hy:%s/<C-r>h//gc<left><left><left>',
+	{ noremap = true, silent = true, desc = "substitute selection" }
+)
+keymap.set(
+	"v",
 	"<leader>s",
 	'"hy:%s/<C-r>h//gc<left><left><left>',
 	{ noremap = true, silent = true, desc = "substitute selection" }
@@ -73,11 +127,11 @@ keymap.set(
 -- Run macro bound to q with Q
 keymap.set("n", "Q", "@q", opts)
 
--- ## PAGE NAVIAGTION ##
-keymap.set("v", "j", "gj", opts)
-keymap.set("v", "k", "gk", opts)
-keymap.set("n", "j", "gj", opts)
-keymap.set("n", "k", "gk", opts)
+-- -- ## PAGE NAVIAGTION ##
+-- keymap.set("v", "j", "gj", opts)
+-- keymap.set("v", "k", "gk", opts)
+-- keymap.set("n", "j", "gj", opts)
+-- keymap.set("n", "k", "gk", opts)
 
 -- ## EOF SHORTCUTS ##
 keymap.set("n", "L", "$", opts)
@@ -146,7 +200,7 @@ end
 -- TOGGLE MARKDOWN CHECKBOX
 keymap.set(
 	"n",
-	"<leader>mt",
+	"<leader>md",
 	[[<cmd>lua ToggleMarkdownCheckbox()<CR>]],
 	{ noremap = true, silent = true, desc = " Md toggle checkbox" }
 )
@@ -382,8 +436,34 @@ keymap.set(
 	"n",
 	"<leader>ms",
 	[[<cmd>lua OpenPDFWithSioyek()<CR>]],
-	{ noremap = true, silent = true, desc = "Open md or tes with sioyek" }
+	{ noremap = true, silent = true, desc = "Open md or tex with sioyek" }
 )
+
+-- OPEN IN BRAVE-BROWSER
+function _G.open_url_in_brave()
+	-- Get the URL under cursor
+	local url = vim.fn.expand("<cfile>")
+
+	-- Check if URL has a protocol, add https if missing
+	if not string.match(url, "^https?://") then
+		url = "https://" .. url
+	end
+
+	-- Command to open URL in Brave (adjust path based on your OS)
+	local cmd = ""
+	if vim.fn.has("unix") == 1 then
+		cmd = 'brave-browser "' .. url .. '"'
+	elseif vim.fn.has("mac") == 1 then
+		cmd = 'open -a "Brave Browser" "' .. url .. '"'
+	end
+
+	-- Execute the command
+	vim.fn.system(cmd)
+	-- print("Opening " .. url .. " in Brave")
+end
+
+-- Map the shortcut to <leader>o (you can change this to whatever you prefer)
+vim.api.nvim_set_keymap("n", "<leader>ob", ":lua open_url_in_brave()<CR>", { noremap = true, silent = true })
 
 -- TOGGLE LINE WRAPPING
 keymap.set("n", "<leader>tw", function()
@@ -402,7 +482,7 @@ keymap.set(
 -- OPEN NEMO AT CURRENT FILE
 keymap.set(
 	"n",
-	"<leader>nm",
+	"<leader>on",
 	[[<cmd>lua OpenNemoAtFile()<CR>]],
 	{ noremap = true, silent = true, desc = "Open Nemo at current file location" }
 )
@@ -444,7 +524,7 @@ end, { noremap = true, silent = true, desc = "Append '# pyright: ignore' at the 
 -- SEARCH SELECTION IN SCHOLAR
 keymap.set(
 	"n",
-	"<leader>gs",
+	"<leader>os",
 	[[:<C-u>lua local query = vim.fn.getreg('"'):gsub(" ", "%%20"); vim.fn.system("xdg-open 'https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=" .. query .. "&btnG='")<CR>]],
-	{ noremap = true, silent = true, desc = "Google Scholar yanked text" }
+	{ noremap = true, silent = true, desc = "Open Scholar yanked text" }
 )

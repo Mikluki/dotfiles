@@ -40,6 +40,10 @@ inkscape = [
 	{ run = 'inkscape "$1"',   orphan = true,   desc = "Open with Inkscape", for = "linux" },
 ]
 
+krita = [
+	{ run = 'krita "$1"',   orphan = true,   desc = "Open with Krita", for = "linux" },
+]
+
 [open]
 rules = [
     # Jupyter Notebook
@@ -54,6 +58,8 @@ rules = [
     { mime = "image/svg+xml", use = [ "inkscape", "reveal" ] },
     # Image
     { mime = "image/*", use = [ "nomacs", "eog", "open", "reveal" ] },
+    # Krita
+    { name = "*.kra", use = [ "krita"] },
     # Media
     { mime = "{audio,video}/*", use = [ "play", "reveal" ] },
     # Archive

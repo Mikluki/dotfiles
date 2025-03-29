@@ -22,11 +22,6 @@ return {
 				"<cmd>Yazi toggle<cr>",
 				desc = "Yazi resume last session",
 			},
-			-- {
-			-- 	"<c-up>",
-			-- 	"<cmd>Yazi toggle<cr>",
-			-- 	desc = "Resume the last yazi session",
-			-- },
 		},
 		---@type YaziConfig
 		opts = {

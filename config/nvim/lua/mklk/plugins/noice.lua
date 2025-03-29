@@ -16,7 +16,32 @@ return {
 		routes = {
 			-- Hide "No information available"
 			{
+				filter = { event = "notify", find = "[Scratch]" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "notify", find = "[Prompt]" },
+				opts = { skip = true },
+			},
+			{
 				filter = { event = "notify", find = "No information available" },
+				opts = { skip = true },
+			},
+			-- Suppress indents
+			{
+				filter = {
+					event = "msg_show",
+					kind = "",
+					find = "<ed",
+				},
+				opts = { skip = true },
+			},
+			{
+				filter = {
+					event = "msg_show",
+					kind = "",
+					find = ">ed",
+				},
 				opts = { skip = true },
 			},
 			-- Suppress yanked messages

@@ -14,6 +14,16 @@ return {
 	config = function()
 		local flash = require("flash")
 		flash.setup({
+			highlight = {
+				backdrop = false, -- Disables the shadow effect
+			},
+			modes = {
+				char = {
+					highlight = {
+						backdrop = false,
+					},
+				},
+			},
 			jump = {
 				-- when using jump labels, set to 'true' to automatically jump
 				-- or execute a motion when there is only one match

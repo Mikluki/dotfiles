@@ -35,8 +35,6 @@ return {
 		-- set keymaps
 		local keymap = vim.keymap -- for conciseness
 
-		-- Define a custom function to filter symbols
-
 		local telescope_builtin = require("telescope.builtin")
 		keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find buffers" })
 
@@ -53,7 +51,7 @@ return {
 			telescope_builtin.find_files({ cwd = vim.fn.stdpath("config") })
 		end, { desc = "Find Neovim files" })
 
-		-- Shortcut to search for Symbols in current file
+		-- SEARCH FOR SYMBOLS IN CURRENT FILE
 		local function filtered_document_symbols()
 			telescope_builtin.lsp_document_symbols({
 				symbols = {
@@ -69,9 +67,9 @@ return {
 			"n",
 			"<leader>fd",
 			filtered_document_symbols,
-			{ noremap = true, silent = true, desc = "Filtered LSP Document Symbols" }
+			{ noremap = true, silent = true, desc = "Find LSP Document Symbols" }
 		)
-		-- Shortcut to search files inlcuding those in gitignore
+		-- SEARCH FILES INLCUDING THOSE IN GITIGNORE
 		keymap.set(
 			"n",
 			"<leader>fi",
@@ -79,12 +77,12 @@ return {
 			{ desc = "Find ignored files" }
 		)
 
-		-- Shortcut for searching existing marks
+		-- SEARCH EXISTING MARKS
 		keymap.set("n", "<leader>fm", function()
 			telescope_builtin.marks()
 		end, { desc = "Find existing marks" })
 
-		-- Shortcut for grepping files with ripgrep
+		-- GREP FILES WITH RIPGREP
 		require("mklk.plugins.telescope.multigrep").setup()
 
 		-- Slightly advanced example of overriding default behavior and theme
@@ -95,6 +93,35 @@ return {
 				previewer = false,
 				sorting_strategy = "ascending", -- Keeps order as in the buffer
 			}))
-		end, { desc = "[/] Fuzzily search in current buffer" })
+		end, { desc = "[/] Find in current buffer" })
+
+		-- GIT HISTORY SEARCH
+		vim.api.nvim_create_user_command("GitHistoryFile", function()
+			require("telescope.builtin").git_bcommits({
+				layout_strategy = "horizontal",
+				layout_config = {
+					width = function(_, cols, _)
+						return cols
+					end,
+					height = function(_, _, rows)
+						return rows
+					end,
+					preview_cutoff = 0, -- Always show preview
+					preview_width = 0.6, -- This works with horizontal layout
+				},
+			})
+		end, {})
+		keymap.set("n", "<leader>gh", "<cmd>GitHistoryFile<cr>", { desc = "Find Git history for a file" })
+
+		-- GIT_STATUS PICKER WITH HORIZONTAL SPLIT
+		vim.api.nvim_create_user_command("FullGitStatus", function()
+			require("telescope.builtin").git_status({
+				layout_strategy = "horizontal",
+			})
+		end, {})
+		keymap.set("n", "<leader>gs", "<cmd>FullGitStatus<cr>", { desc = "Find Git Status" })
+
+		-- FIND GIT HUNKS
+		require("mklk.plugins.telescope.githunk-search").setup()
 	end,
 }

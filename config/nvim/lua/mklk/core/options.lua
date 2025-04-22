@@ -26,7 +26,6 @@ opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
 
 -- ### LINE WRAPPING & LINE BREAK ###
-local opt = vim.opt
 
 -- Global settings for line wrapping
 opt.wrap = false -- Disable wrapping globally

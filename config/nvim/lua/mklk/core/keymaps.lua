@@ -30,11 +30,11 @@ keymap.set("n", "<leader>cn", "<cmd>cnext<CR>", { desc = "Quickfix Next" })
 keymap.set("n", "<leader>kk", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
 keymap.set("n", "<leader>cp", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
 -- first item
-keymap.set("n", "<leader>cf", "<cmd>cfirst<CR>", { desc = "Quickfix Prev" })
+keymap.set("n", "<leader>cf", "<cmd>cfirst<CR>", { desc = "Quickfix First" })
 -- last item
-keymap.set("n", "<leader>cl", "<cmd>clast<CR>", { desc = "Quickfix Prev" })
+keymap.set("n", "<leader>cl", "<cmd>clast<CR>", { desc = "Quickfix Last" })
 -- cdo
-keymap.set("n", "<leader>cd", ":cdo ", { desc = "Quickfix Prev" })
+keymap.set("n", "<leader>cd", ":cdo ", { desc = "Quickfix Do" })
 -- open & close
 keymap.set("n", "<leader>co", "<cmd>copen<CR>", { desc = "Quickfix Open" })
 keymap.set("n", "<leader>cc", "<cmd>cclose<CR>", { desc = "Quickfix Close" })

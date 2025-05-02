@@ -1,6 +1,6 @@
 return {
 	"nvim-telescope/telescope.nvim",
-	branch = "0.1.x",
+	-- branch = "0.1.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -8,23 +8,35 @@ return {
 	},
 	config = function()
 		local telescope = require("telescope")
-		local actions = require("telescope.actions")
-
+		local ts_actions = require("telescope.actions")
+		require("telescope.utils")
 		telescope.setup({
 			defaults = {
 				path_display = { "smart" },
 				mappings = {
 					i = {
-						["<C-k>"] = actions.move_selection_previous, -- move to prev result
-						["<C-j>"] = actions.move_selection_next, -- move to next result
-						["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-						["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
-						["<C-c>"] = actions.delete_buffer, -- Close selected buffer
+						["<C-k>"] = ts_actions.move_selection_previous, -- move to prev result
+						["<C-j>"] = ts_actions.move_selection_next, -- move to next result
+						["<C-q>"] = ts_actions.send_to_qflist + ts_actions.open_qflist,
+						["<C-w>"] = ts_actions.send_selected_to_qflist + ts_actions.open_qflist,
+						["<C-c>"] = ts_actions.delete_buffer, -- Close selected buffer
+						["<Tab>"] = ts_actions.toggle_selection + ts_actions.move_selection_worse,
+						["<S-Tab>"] = ts_actions.toggle_selection + ts_actions.move_selection_better,
 					},
 					n = {
-						["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-						["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
-						["<C-c>"] = actions.delete_buffer, -- Close selected buffer
+						["<C-q>"] = ts_actions.send_to_qflist + ts_actions.open_qflist,
+						["<C-w>"] = ts_actions.send_selected_to_qflist + ts_actions.open_qflist,
+						["<Tab>"] = ts_actions.toggle_selection + ts_actions.move_selection_worse,
+						["<S-Tab>"] = ts_actions.toggle_selection + ts_actions.move_selection_better,
+						["<C-c>"] = ts_actions.delete_buffer, -- Close selected buffer
+					},
+				},
+			},
+			pickers = {
+				diagnostics = {
+					layout_config = {
+						width = 0.9, -- Make diagnostics picker wider (90% of screen)
+						preview_width = 0.5,
 					},
 				},
 			},
@@ -36,6 +48,7 @@ return {
 		local keymap = vim.keymap -- for conciseness
 
 		local telescope_builtin = require("telescope.builtin")
+		keymap.set("n", "<leader>fx", "<cmd>Telescope diagnostics<cr>", { desc = "Find diagnostics worksapce" })
 		keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find buffers" })
 
 		keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files in cwd" })
@@ -44,31 +57,34 @@ return {
 		keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 
 		keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Find keymaps" })
-		keymap.set("n", "<leader>fx", "<cmd>Telescope diagnostics<cr>", { desc = "Find diagnostics" })
 		keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find TODOs" })
 
 		keymap.set("n", "<leader>fn", function()
 			telescope_builtin.find_files({ cwd = vim.fn.stdpath("config") })
 		end, { desc = "Find Neovim files" })
 
-		-- SEARCH FOR SYMBOLS IN CURRENT FILE
-		local function filtered_document_symbols()
-			telescope_builtin.lsp_document_symbols({
-				symbols = {
-					"method",
-					"function",
-					"class",
-					--"constant",
-				},
-				sorting_strategy = "ascending", -- Ensures order follows LSP
-			})
-		end
-		keymap.set(
-			"n",
-			"<leader>fd",
-			filtered_document_symbols,
-			{ noremap = true, silent = true, desc = "Find LSP Document Symbols" }
-		)
+		-- SEARCH FOR SYMBOLS
+		local symbol_filter = { -- Define symbols filter once to reuse
+			symbols = { "method", "function", "class" },
+			sorting_strategy = "ascending", -- Ensures order follows LSP
+		}
+
+		-- Map for document symbols
+		keymap.set("n", "<leader>fd", function()
+			-- Ensure we're working with the current buffer
+			vim.api.nvim_command("noautocmd normal! m`") -- Set a mark to return to
+			local current_buf = vim.api.nvim_get_current_buf()
+
+			-- Force telescope to use the current buffer
+			telescope_builtin.lsp_document_symbols(vim.tbl_extend("force", symbol_filter, {
+				bufnr = current_buf,
+			}))
+		end, { noremap = true, silent = true, desc = "Find LSP Document Symbols" })
+
+		keymap.set("n", "<leader>fD", function()
+			telescope_builtin.lsp_dynamic_workspace_symbols(symbol_filter)
+		end, { noremap = true, silent = true, desc = "Find LSP Workspace Symbols" })
+
 		-- SEARCH FILES INLCUDING THOSE IN GITIGNORE
 		keymap.set(
 			"n",

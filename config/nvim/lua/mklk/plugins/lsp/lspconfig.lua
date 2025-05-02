@@ -47,10 +47,13 @@ return {
 				keymap.set("n", "<leader>sr", vim.lsp.buf.rename, opts) -- smart rename
 
 				opts.desc = "Show buffer diagnostics"
-				keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
+				keymap.set("n", "<leader>dd", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
 
-				opts.desc = "Show line diagnostics"
-				keymap.set("n", "<leader>ds", vim.diagnostic.open_float, opts) -- show diagnostics for line
+				opts.desc = "Show workspace diagnostics"
+				keymap.set("n", "<leader>dr", "<cmd>Telescope diagnostics<CR>", opts) -- show diagnostics for workspace
+
+				opts.desc = "Diagnostics Line show"
+				keymap.set("n", "<leader>dl", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
 				opts.desc = "Go to previous diagnostic"
 				keymap.set("n", "<leader>dp", function()
@@ -104,7 +107,7 @@ return {
 				end
 
 				opts.desc = "Restart LSP"
-				keymap.set("n", "<leader>dr", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+				keymap.set("n", "<leader>lr", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 			end,
 		})
 

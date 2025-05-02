@@ -29,7 +29,7 @@ sioyek = [
 ]
 
 nomacs = [
-	{ run = 'nomacs "$1"',     orphan = true,   desc = "Open with Nomacs", for = "linux" },
+	{ run = 'QT_SCALE_FACTOR=1.4 nomacs "$1"',     orphan = true,   desc = "Open with Nomacs", for = "linux" },
 ]
 
 eog = [

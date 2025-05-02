@@ -30,7 +30,9 @@ return {
 				keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
 				opts.desc = "Show LSP definitions"
-				keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+				keymap.set("n", "gd", function()
+					vim.lsp.buf.definition() -- go to definition
+				end, opts)
 
 				opts.desc = "Show documentation for what is under cursor"
 				keymap.set("n", "gh", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
@@ -57,12 +59,20 @@ return {
 				keymap.set("n", "<leader>ds", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
 				opts.desc = "Go to previous diagnostic"
-				keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
-				keymap.set("n", "<leader>K", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+				keymap.set("n", "<leader>dp", function()
+					vim.diagnostic.jump({ count = -1, float = true })
+				end, opts)
+				keymap.set("n", "<leader>K", function()
+					vim.diagnostic.jump({ count = -1, float = true })
+				end, opts)
 
 				opts.desc = "Go to next diagnostic"
-				keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
-				keymap.set("n", "<leader>J", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+				keymap.set("n", "<leader>dn", function()
+					vim.diagnostic.jump({ count = 1, float = true })
+				end, opts)
+				keymap.set("n", "<leader>J", function()
+					vim.diagnostic.jump({ count = 1, float = true })
+				end, opts)
 
 				-- Yank diagnostics message
 				keymap.set("n", "<leader>dy", function()
@@ -107,14 +117,22 @@ return {
 		-- used to enable autocompletion (assign to every lsp server config)
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
-		-- Change the Diagnostic symbols in the sign column (gutter)
-		-- (not in youtube nvim video)
-		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-		end
+		-- Update diagnostic signs in the sign column using the new API
+		-- Set diagnostic signs using the new API
+		local signs = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.INFO] = " ",
+			[vim.diagnostic.severity.HINT] = "󰠠 ",
+		}
 
+		vim.diagnostic.config({
+			signs = {
+				text = signs,
+			},
+		})
+
+		-- #### LSP SETUP #### --
 		mason_lspconfig.setup_handlers({
 			-- default handler for installed servers
 			function(server_name)

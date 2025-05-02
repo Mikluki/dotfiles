@@ -26,7 +26,6 @@ opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
 
 -- ### LINE WRAPPING & LINE BREAK ###
-
 -- Global settings for line wrapping
 opt.wrap = false -- Disable wrapping globally
 opt.linebreak = true -- Prevent breaking words in the middle
@@ -58,7 +57,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
 	callback = function()
-		vim.highlight.on_yank({ higroup = "Visual", timeout = 150 })
+		vim.hl.on_yank({ higroup = "Visual", timeout = 150 })
 	end,
 })
 

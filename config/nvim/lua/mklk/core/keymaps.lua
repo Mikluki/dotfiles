@@ -42,12 +42,14 @@ keymap.set("n", "<leader>cc", "<cmd>cclose<CR>", { desc = "Quickfix Close" })
 -- ### BUFFER SAVE & CLOSE ###
 -- keymap.set("n", "<leader>e", "<cmd>Explore<CR>", { desc = "Explorer" })
 keymap.set("n", "<leader>w", "<cmd>wa<CR>", { desc = "Save all" })
-keymap.set("n", "<leader>q", "<cmd>bd<CR>", { desc = "Close buffer" })
+keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Close buffer" })
+keymap.set("n", "<leader>W", "<cmd>wa|qa<CR>", { desc = "Save all & Close all" })
 keymap.set("n", "<leader>Q", "<cmd>qa<CR>", { desc = "Close all" })
-keymap.set("n", "<leader>X", "<cmd>bufdo bd!<CR>", { desc = "Close all" })
+keymap.set("n", "<leader>X", "<cmd>bufdo bd!<CR>", { desc = "Delete all buffers" })
 
 -- ### SPLIT MANAGEMENT ###
 -- ## SPLITS ##
+keymap.set("n", "<leader>sn", "<cmd>vnew<CR>", { desc = "Empty split on the right" }) -- split window vertically
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
@@ -99,7 +101,7 @@ vim.keymap.set("n", "<leader>do", function()
 	vim.api.nvim_set_current_win(cur_win)
 end, { desc = "Turn off diff in all splits", noremap = true, silent = true })
 
--- ## TABS ##
+-- ### TAB MANAGEMENT ###
 keymap.set("n", "<leader>tt", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
 keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
 keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
@@ -109,6 +111,12 @@ keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) 
 
 keymap.set("n", "<M-k>", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
 keymap.set("n", "<M-j>", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
+
+-- Keymaps to jump to tabs
+vim.api.nvim_set_keymap("n", "<leader>1", "1gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>2", "2gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>3", "3gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>4", "3gt", { noremap = true, silent = true })
 
 -- ## REPLACE SELECTION ##
 keymap.set(
@@ -134,10 +142,8 @@ keymap.set("n", "Q", "@q", opts)
 -- keymap.set("n", "k", "gk", opts)
 
 -- ## EOF SHORTCUTS ##
-keymap.set("n", "L", "$", opts)
-keymap.set("n", "H", "^", opts)
-keymap.set("v", "L", "$", opts)
-keymap.set("v", "H", "^", opts)
+keymap.set({ "n", "v", "o" }, "L", "$", opts)
+keymap.set({ "n", "v", "o" }, "H", "^", opts)
 
 local function conditional_map(key, replacement)
 	return function()
@@ -471,12 +477,33 @@ keymap.set("n", "<leader>tw", function()
 	print("Line wrapping " .. (vim.wo.wrap and "enabled" or "disabled"))
 end, { desc = "Toggle line wrapping" })
 
+-- Yank filename of current file
+keymap.set(
+	"n",
+	"<leader>yf",
+	[[:let @+ = expand('%:t')<CR>]],
+	{ noremap = true, silent = true, desc = "Yank filename of the current file" }
+)
 -- Yank path of current file
 keymap.set(
 	"n",
 	"<leader>yp",
 	[[:let @+ = expand('%:p')<CR>]],
 	{ noremap = true, silent = true, desc = "Yank path of the current file" }
+)
+-- Yank relative path of current file
+keymap.set(
+	"n",
+	"<leader>yr",
+	[[:let @+ = expand('%')<CR>]],
+	{ noremap = true, silent = true, desc = "Yank relative path of the current file" }
+)
+-- Yank path of current file dir
+keymap.set(
+	"n",
+	"<leader>yd",
+	[[:let @+ = expand('%:p:h')<CR>]],
+	{ noremap = true, silent = true, desc = "Yank path of the current dir" }
 )
 
 -- OPEN NEMO AT CURRENT FILE

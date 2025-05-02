@@ -452,7 +452,6 @@
     "zenMode.hideLineNumbers": false,
     "terminal.integrated.fontFamily": "Hack Nerd Font",
     "editor.fontFamily": "'Hack Nerd Font', 'Droid Sans Mono', 'monospace'",
-    "window.menuBarVisibility": "toggle",
     "workbench.activityBar.location": "hidden",
     "gruvboxMaterial.darkContrast": "soft",
     "gruvboxMaterial.darkPalette": "material",
@@ -475,5 +474,10 @@
     "breadcrumbs.showVariables": false,
     "breadcrumbs.showTypeParameters": false,
     "workbench.colorTheme": "GruvRice",
+    "chat.commandCenter.enabled": false,
+    "window.menuBarVisibility": "toggle",
+    "window.commandCenter": false,
+    "workbench.layoutControl.enabled": false,
+    "window.titleBarStyle": "native",
     // "workbench.colorTheme": "GruvRice",
 }

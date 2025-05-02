@@ -48,6 +48,7 @@ keymap.set("n", "<leader>X", "<cmd>bufdo bd!<CR>", { desc = "Close all" })
 
 -- ### SPLIT MANAGEMENT ###
 -- ## SPLITS ##
+keymap.set("n", "<leader>sn", "<cmd>vnew<CR>", { desc = "Empty split on the right" }) -- split window vertically
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
@@ -471,12 +472,33 @@ keymap.set("n", "<leader>tw", function()
 	print("Line wrapping " .. (vim.wo.wrap and "enabled" or "disabled"))
 end, { desc = "Toggle line wrapping" })
 
+-- Yank filename of current file
+keymap.set(
+	"n",
+	"<leader>yf",
+	[[:let @+ = expand('%:t')<CR>]],
+	{ noremap = true, silent = true, desc = "Yank filename of the current file" }
+)
 -- Yank path of current file
 keymap.set(
 	"n",
 	"<leader>yp",
 	[[:let @+ = expand('%:p')<CR>]],
 	{ noremap = true, silent = true, desc = "Yank path of the current file" }
+)
+-- Yank relative path of current file
+keymap.set(
+	"n",
+	"<leader>yr",
+	[[:let @+ = expand('%')<CR>]],
+	{ noremap = true, silent = true, desc = "Yank relative path of the current file" }
+)
+-- Yank path of current file dir
+keymap.set(
+	"n",
+	"<leader>yd",
+	[[:let @+ = expand('%:p:h')<CR>]],
+	{ noremap = true, silent = true, desc = "Yank path of the current dir" }
 )
 
 -- OPEN NEMO AT CURRENT FILE

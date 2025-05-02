@@ -34,6 +34,7 @@ return {
 				"cssls",
 				"eslint", -- ESLint LSP for linting
 				"ts_ls", -- TypeScript/JavaScript LSP
+				"rust_analyzer",
 				-- "pylint",
 				-- "tailwindcss",
 				-- "svelte",

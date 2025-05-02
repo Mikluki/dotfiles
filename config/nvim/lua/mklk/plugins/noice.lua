@@ -14,101 +14,70 @@ return {
 			},
 		},
 		routes = {
+			-- Hide unkown
+			{
+				filter = { event = "notify", find = " choose " },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "notify", find = " lines " },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "notify", find = "Scratch" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "notify", find = "Prompt" },
+				opts = { skip = true },
+			},
 			-- Hide "No information available"
-			{
-				filter = { event = "notify", find = "[Scratch]" },
-				opts = { skip = true },
-			},
-			{
-				filter = { event = "notify", find = "[Prompt]" },
-				opts = { skip = true },
-			},
 			{
 				filter = { event = "notify", find = "No information available" },
 				opts = { skip = true },
 			},
 			-- Suppress indents
 			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = "<ed",
-				},
+				filter = { event = "msg_show", find = "<ed" },
 				opts = { skip = true },
 			},
 			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = ">ed",
-				},
+				filter = { event = "msg_show", find = ">ed" },
 				opts = { skip = true },
 			},
 			-- Suppress yanked messages
 			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = ", job_id",
-				},
+				filter = { event = "msg_show", find = ", job_id" },
 				opts = { skip = true },
 			},
-			-- Suppress yanked messages
+			-- Suppress yanked & written messages
 			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = " lines yanked",
-				},
+				filter = { event = "msg_show", find = "yanked" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "msg_show", find = "written" },
 				opts = { skip = true },
 			},
 			-- Suppress undo/redo messages
 			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = "change;",
-				},
+				filter = { event = "msg_show", find = "change;" },
 				opts = { skip = true },
 			},
 			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = "more line",
-				},
+				filter = { event = "msg_show", find = "%d more line" },
 				opts = { skip = true },
 			},
 			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = "line less",
-				},
+				filter = { event = "msg_show", find = "line less" },
 				opts = { skip = true },
 			},
 			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = "fewer line",
-				},
+				filter = { event = "msg_show", find = "%d fewer line" },
 				opts = { skip = true },
 			},
 			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = "Already at oldest",
-				},
-				opts = { skip = true },
-			},
-			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = "written",
-				},
+				filter = { event = "msg_show", find = "Already at oldest" },
 				opts = { skip = true },
 			},
 		},

@@ -177,6 +177,45 @@ return {
 					},
 				})
 			end,
+
+			["rust_analyzer"] = function()
+				lspconfig["rust_analyzer"].setup({
+					capabilities = capabilities,
+					filetypes = { "rust" },
+					root_dir = function(fname)
+						local util = require("lspconfig.util")
+
+						-- First try to find Cargo.toml
+						local cargo_root = util.root_pattern("Cargo.toml")(fname)
+						if cargo_root then
+							return cargo_root
+						end
+
+						-- Then try to find .git using vim.fs (modern Neovim way)
+						local git_dir = vim.fs.find(".git", { path = fname, upward = true })[1]
+						if git_dir then
+							return vim.fs.dirname(git_dir)
+						end
+
+						-- Fallback to current working directory (scratch file)
+						return vim.fn.getcwd()
+					end,
+					settings = {
+						["rust-analyzer"] = {
+							cargo = {
+								allFeatures = true,
+							},
+							inlayHints = {
+								lifetimeElisionHints = {
+									enable = true,
+									useParameterNames = true,
+								},
+							},
+						},
+					},
+				})
+			end,
+
 			["svelte"] = function()
 				-- configure svelte server
 				lspconfig["svelte"].setup({

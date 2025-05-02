@@ -18,7 +18,7 @@ return {
 			},
 			-- keymap.set("n", "<leader>e", "<cmd>Explore<CR>", { desc = "Explorer" })
 			{
-				"<leader>yr",
+				"<leader>re",
 				"<cmd>Yazi toggle<cr>",
 				desc = "Yazi resume last session",
 			},

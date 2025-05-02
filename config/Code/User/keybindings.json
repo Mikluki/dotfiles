@@ -44,7 +44,7 @@
         "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
     },
     {
-        "key": "y y",
+        "key": "y",
         "command": "filesExplorer.copy",
         "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !inputFocus"
     },
@@ -54,12 +54,12 @@
         "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceReadonly && !inputFocus"
     },
     {
-        "key": "y p",
+        "key": "c c",
         "command": "copyFilePath",
         "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !inputFocus"
     },
     {
-        "key": "y r",
+        "key": "c f",
         "command": "copyRelativeFilePath",
         "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !inputFocus"
     },
@@ -75,12 +75,12 @@
     },
     // explorer toggle {
     {
-        "key": "meta+e",
+        "key": "ctrl+e",
         "command": "workbench.view.explorer",
         "when": "!explorerViewletFocus"
     },
     {
-        "key": "meta+e",
+        "key": "ctrl+e",
         "command": "workbench.action.toggleSidebarVisibility",
         "when": "explorerViewletFocus"
     },

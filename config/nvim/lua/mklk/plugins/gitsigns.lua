@@ -6,10 +6,10 @@ return {
 		"nvim-lua/plenary.nvim",
 	},
 	config = function()
-		local gitsigns = require("gitsigns")
-
-		gitsigns.setup({
+		require("gitsigns").setup({
 			signcolumn = false,
+			auto_attach = true,
+
 			on_attach = function(bufnr)
 				local gs = package.loaded.gitsigns
 

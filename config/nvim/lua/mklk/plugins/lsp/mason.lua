@@ -30,17 +30,18 @@ return {
 				"html",
 				"lua_ls",
 				"pyright",
-				-- "pylint",
-				-- "ruff",
+				"ruff",
 				"cssls",
 				"eslint", -- ESLint LSP for linting
 				"ts_ls", -- TypeScript/JavaScript LSP
+				-- "pylint",
 				-- "tailwindcss",
 				-- "svelte",
 				-- "graphql",
 				-- "emmet_ls",
 				-- "prismals",
 			},
+			automatic_installation = false,
 		})
 
 		mason_tool_installer.setup({
@@ -50,6 +51,7 @@ return {
 				"isort", -- Python formatter
 				"black", -- Python formatter
 				"eslint_d", -- Faster ESLint daemon
+				"ruff", -- ruff is installed as a tool
 			},
 		})
 	end,

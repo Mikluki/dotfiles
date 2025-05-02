@@ -7,15 +7,9 @@ return {
 		{ "folke/neodev.nvim", opts = {} },
 	},
 	config = function()
-		-- import lspconfig plugin
-		local lspconfig = require("lspconfig")
-
-		-- import mason_lspconfig plugin
-		local mason_lspconfig = require("mason-lspconfig")
-
-		-- import cmp-nvim-lsp plugin
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
+		local lspconfig = require("lspconfig") -- import lspconfig plugin
+		local mason_lspconfig = require("mason-lspconfig") -- import mason_lspconfig plugin
+		local cmp_nvim_lsp = require("cmp_nvim_lsp") -- import cmp-nvim-lsp plugin
 		local keymap = vim.keymap -- for conciseness
 
 		vim.api.nvim_create_autocmd("LspAttach", {
@@ -31,7 +25,7 @@ return {
 
 				opts.desc = "Show LSP definitions"
 				keymap.set("n", "gd", function()
-					vim.lsp.buf.definition() -- go to definition
+					vim.lsp.buf.definition()
 				end, opts)
 
 				opts.desc = "Show documentation for what is under cursor"
@@ -141,6 +135,45 @@ return {
 				})
 			end,
 
+			["ruff"] = function()
+				-- 	-- configure Ruff language server
+				-- 	lspconfig["ruff"].setup({
+				-- 		capabilities = capabilities,
+				-- 		on_attach = function(client, bufnr)
+				-- 			-- disable all positional features
+				-- 			client.server_capabilities.definitionProvider = false
+				-- 			client.server_capabilities.hoverProvider = false
+				-- 			client.server_capabilities.referencesProvider = false
+				-- 			client.server_capabilities.renameProvider = false
+				-- 			client.server_capabilities.documentFormattingProvider = false
+				-- 			client.server_capabilities.codeActionProvider = false
+				-- 		end,
+				-- 		-- Optional settings - you can adjust these based on your preferences
+				-- 		settings = {
+				-- 			-- You can add specific Ruff settings here if needed
+				-- 		},
+				-- 	})
+			end,
+
+			["pyright"] = function()
+				lspconfig["pyright"].setup({
+					capabilities = capabilities,
+					settings = {
+						-- pyright = {
+						-- 	disableOrganizeImports = true,
+						-- 	disableTaggedHints = true,
+						-- },
+						-- python = {
+						-- 	analysis = {
+						-- 		diagnosticSeverityOverrides = {
+						-- 			-- https://github.com/microsoft/pyright/blob/main/docs/configuration.md#type-check-diagnostics-settings
+						-- 			reportUndefinedVariable = "none",
+						-- 		},
+						-- 	},
+						-- },
+					},
+				})
+			end,
 			["svelte"] = function()
 				-- configure svelte server
 				lspconfig["svelte"].setup({
@@ -194,20 +227,6 @@ return {
 				})
 			end,
 
-			-- ["graphql"] = function()
-			--   -- configure graphql language server
-			--   lspconfig["graphql"].setup({
-			--     capabilities = capabilities,
-			--     filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-			--   })
-			-- end,
-			-- ["emmet_ls"] = function()
-			--   -- configure emmet language server
-			--   lspconfig["emmet_ls"].setup({
-			--     capabilities = capabilities,
-			--     filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-			--   })
-			-- end,
 			["lua_ls"] = function()
 				-- configure lua server (with special settings)
 				lspconfig["lua_ls"].setup({
@@ -225,6 +244,21 @@ return {
 					},
 				})
 			end,
+
+			-- ["graphql"] = function()
+			--   -- configure graphql language server
+			--   lspconfig["graphql"].setup({
+			--     capabilities = capabilities,
+			--     filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+			--   })
+			-- end,
+			-- ["emmet_ls"] = function()
+			--   -- configure emmet language server
+			--   lspconfig["emmet_ls"].setup({
+			--     capabilities = capabilities,
+			--     filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+			--   })
+			-- end,
 		})
 	end,
 }

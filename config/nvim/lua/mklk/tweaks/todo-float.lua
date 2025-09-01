@@ -34,7 +34,7 @@ local function open_floating_file(filepath)
 
 	-- If the buffer doesn't exist, create one and edit the file
 	if buf == -1 then
-		buf = vim.api.nvim_create_buf(false, false)
+		buf = vim.api.nvim_create_buf(true, true)
 		vim.api.nvim_buf_set_name(buf, path)
 		vim.api.nvim_buf_call(buf, function()
 			vim.cmd("edit " .. vim.fn.fnameescape(path))
@@ -75,38 +75,67 @@ local function open_floating_file(filepath)
 	})
 end
 
+local function open_normal_file(filepath)
+	local path = vim.fn.expand(filepath)
+	if vim.fn.filereadable(path) == 0 then
+		vim.notify("File does not exist: " .. path, vim.log.levels.ERROR)
+		return
+	end
+	vim.cmd("edit " .. vim.fn.fnameescape(path))
+end
+
 local function setup_user_commands(opts)
 	local target_file = opts.target_file or "ToDo.md"
-	local resolved_target_file = vim.fn.resolve(target_file)
+	local cwd_target_file = vim.fn.getcwd() .. "/" .. target_file
 
-	if vim.fn.filereadable(resolved_target_file) == true then
-		opts.target_file = resolved_target_file
+	if vim.fn.filereadable(cwd_target_file) == 1 then
+		opts.target_file = cwd_target_file
 	else
 		opts.target_file = opts.global_file
 	end
 
+	-- Define all paths once
+	local paths = {
+		local_file = opts.target_file,
+		global_file = "~/data/second-brain/ToDo.md",
+		self_file = "~/data/second-brain/vault-self/ToDo-self.md",
+	}
+
 	vim.api.nvim_create_user_command("FloatToDoLocal", function()
-		open_floating_file(opts.target_file)
+		open_floating_file(paths.local_file)
 	end, {})
 
 	vim.api.nvim_create_user_command("FloatToDo", function()
-		open_floating_file("~/data/second-brain/ToDo.md")
+		open_floating_file(paths.global_file)
 	end, {})
 
 	vim.api.nvim_create_user_command("FloatToDoSelf", function()
-		open_floating_file("~/data/second-brain/vault-self/ToDo.md")
+		open_floating_file(paths.self_file)
 	end, {})
+
+	return paths -- Return just the paths
 end
 
-local function setup_keymaps()
+local function setup_keymaps(paths)
 	vim.keymap.set("n", "<leader>td", ":FloatToDo<CR>", { silent = true })
 	vim.keymap.set("n", "<leader>ts", ":FloatToDoSelf<CR>", { silent = true })
 	vim.keymap.set("n", "<leader>tl", ":FloatToDoLocal<CR>", { silent = true })
+
+	-- Normal buffer keymaps - capture the actual string values
+	vim.keymap.set("n", "<leader>tD", function()
+		open_normal_file(paths.global_file)
+	end, { silent = true })
+	vim.keymap.set("n", "<leader>tS", function()
+		open_normal_file(paths.self_file)
+	end, { silent = true })
+	vim.keymap.set("n", "<leader>tL", function()
+		open_normal_file(paths.local_file)
+	end, { silent = true })
 end
 
 M.setup = function(opts)
-	setup_user_commands(opts)
-	setup_keymaps()
+	local paths = setup_user_commands(opts)
+	setup_keymaps(paths)
 end
 
 return M

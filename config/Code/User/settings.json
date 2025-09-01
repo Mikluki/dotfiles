@@ -14,6 +14,10 @@
     //             "purpose": ["debug-in-terminal"]
     //         }
     //     ]},
+
+    // hide title bar
+    // "window.titleBarStyle": "native",
+
     "editor.mouseWheelScrollSensitivity": 2.5,
     "workbench.list.mouseWheelScrollSensitivity": 2.5,
     "security.workspace.trust.enabled": false,
@@ -26,14 +30,13 @@
     "editor.lineNumbers": "relative",
 
     // Font settings
-    "editor.lineDecorationsWidth": 5,
     "window.density.editorTabHeight": "compact",
     "window.zoomLevel": 1.7,
     "editor.fontSize": 14.0,
     "editor.lineHeight": 19,
     "debug.console.fontSize": 15,
     "terminal.integrated.fontSize": 15,
-    "notebook.markup.fontSize": 14.5,
+    "notebook.markup.fontSize": 15.5,
     "notebook.markdown.lineHeight": 24,
     "editor.cursorSurroundingLines": 5,
     "files.insertFinalNewline": true,
@@ -198,8 +201,7 @@
     // === VIM CFG
 
     "vim.leader": "<space>",
-
-    "vim.easymotion": true,
+"vim.easymotion": true,
     "vim.surround": true,
 
     "vim.useSystemClipboard": true,
@@ -478,6 +480,7 @@
     "window.menuBarVisibility": "toggle",
     "window.commandCenter": false,
     "workbench.layoutControl.enabled": false,
-    "window.titleBarStyle": "native",
+    "window.menuStyle": "native",
+    "python.analysis.typeCheckingMode": "basic",
     // "workbench.colorTheme": "GruvRice",
 }

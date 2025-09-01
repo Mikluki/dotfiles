@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# lsd
+echo "# Copying lsd cfg"
+cp -r ~/.config/lsd ./config
+
 # kitty
 echo "# Copying kitty cfg"
 cp -r ~/.config/kitty ./config
@@ -12,6 +16,15 @@ cp -r ~/.vimrc ./config/vim
 echo "# Copying nvim cfg"
 cp -r ~/.config/nvim ./config
 
+# rofi
+echo "# Copying rofi cfg"
+cp ~/.config/rofi/config.rasi ./config/rofi/config.rasi
+
+# rofimoji
+echo "# Copying rofimoji cfg"
+cp ~/.config/rofimoji.rc ./config/rofimoji/rofimoji.rc
+cp -r ~/.config/rofimoji/data/ ./config/rofimoji/
+
 # Yazi
 echo "# Copying Yazi cfg"
 cp ~/.config/yazi/init.lua ./config/yazi
@@ -19,6 +32,10 @@ cp ~/.config/yazi/yazi.toml ./config/yazi
 cp ~/.config/yazi/theme.toml ./config/yazi
 cp ~/.config/yazi/keymap.toml ./config/yazi
 cp -r ~/.config/yazi/plugins ./config/yazi
+
+# scripts
+echo "# Copying scripts"
+cp /home/mik/scripts/yank ./config/scripts/
 
 # tmux
 echo "# Copying tmux cfg"

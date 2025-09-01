@@ -2,33 +2,33 @@
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
 "$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
 
-[manager]
+[mgr]
 
 prepend_keymap = [
 
-    { on = [ "o", "n" ], run = "shell 'nemo \"$PWD\" &>/dev/null &'", desc = "Open Nemo in current directory" },
+  { on = [ "g", "s" ],       run = "cd ~/scripts",   desc = "Goto phc_sync" },
 
-    { on = "q",          run = "close",              desc = "Close the current tab, or quit if it is last tab" },
-    { on = "<C-c>",      run = "quit",               desc = "Exit the process" },
+  { on = "q",          run = "close",              desc = "Close the current tab, or quit if it is last tab" },
+  { on = "<C-c>",      run = "quit",               desc = "Exit the process" },
 
-    { on = [ "W" ],      run = "tasks_show", desc = "Show task manager" },
-    { on = [ "w" ],      run = 'shell "$SHELL" --block --confirm', desc = "Open shell here" },
-    { on = [ "S-s" ],    run = 'shell "$SHELL" --block --confirm', desc = "Open shell here" },
+  { on = [ "W" ],      run = " asks_show", desc = "Show task manager" },
+  { on = [ "w" ],      run = 'shell "$SHELL" --block --confirm', desc = "Open shell here" },
+  { on = [ "S-s" ],    run = 'shell "$SHELL" --block --confirm', desc = "Open shell here" },
 
-    { on = [ "<BackTab>" ],  run = "tab_switch -1 --relative",  desc = "Switch to the previous tab" },
-    { on = [ "<Tab>" ],  run = "tab_switch 1 --relative",  desc = "Switch to the next tab" },
-    { on = [ "g", "t" ], run = "tab_switch 1 --relative",  desc = "Switch to the next tab" },
-    { on = [ "g", "T" ], run = "tab_switch -1 --relative",  desc = "Switch to the previous tab" },
+  { on = "z",         run = "plugin zoxide",               desc = "Jump to a directory using zoxide" },
+  { on = "Z",         run = "plugin fzf",                  desc = "Jump to a directory or reveal a file using fzf" },
 
-    { on = [ "l" ],      run = [ "plugin smart-enter", "escape --visual --select" ], desc = "Enter the child directory, or open file." },
-    { on = [ "L" ],      run = "plugin smart-enter --args='detatch'", desc = "Open in new window." },
-    { on = [ "=" ],      run = """
-        shell 'printf "Mode Bits: "; read ans; chmod $ans "$@"' --block --confirm
-    """, desc = "chmod" },
+  { on = [ "<BackTab>" ],  run = "tab_switch -1 --relative",  desc = "Switch to the previous tab" },
+  { on = [ "<Tab>" ],  run = "tab_switch 1 --relative",  desc = "Switch to the next tab" },
+  { on = [ "g", "t" ], run = "tab_switch 1 --relative",  desc = "Switch to the next tab" },
+  { on = [ "g", "T" ], run = "tab_switch -1 --relative",  desc = "Switch to the previous tab" },
 
-    { on = [ "g", "s" ],       run = "cd ~/data/hpc_sync",   desc = "Goto phc_sync" },
-    { on = [ "g", "0" ],       run = "cd ~/1_projects/antenna_design/antenna_proFM_article",   desc = "Goto antnna_art" },
-    { on = [ "g", "a" ],       run = "cd ~/1_projects/metal_alloys/code",   desc = "Goto alloy_code" },
-    { on = [ "g", "o" ],       run = "cd ~/data/obsidian_main",   desc = "Goto obsidian" },
-    { on = [ "g", "w" ],       run = "cd /media/mik/Windows 10/Main",   desc = "Goto Windows" },
+  { on = [ "o", "n" ], run = "shell 'nemo \"$PWD\" &>/dev/null &'", desc = "Open Nemo in current directory" },
+  { on = [ "o", "p" ], run = 'shell "view_poscar.sh \"$1\"" &>/dev/null &', desc = "View POSCAR file" },
+
+  { on = [ "l" ],      run = [ "plugin smart-enter", "escape --visual --select" ], desc = "Enter the child directory, or open file." },
+  { on = [ "L" ],      run = "plugin smart-enter --args='detatch'", desc = "Open in new window." },
+  { on = [ "=" ],      run = """
+      shell 'printf "Mode Bits: "; read ans; chmod $ans "$@"' --block --confirm
+  """, desc = "chmod" },
 ]

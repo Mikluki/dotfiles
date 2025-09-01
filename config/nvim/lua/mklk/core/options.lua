@@ -34,7 +34,7 @@ opt.showbreak = "  " -- Add visual indentation to wrapped lines
 
 -- FileType-specific settings for Markdown
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "markdown",
+	pattern = { "markdown", "tex" },
 	callback = function()
 		vim.wo.wrap = true -- Enable line wrapping
 		vim.wo.linebreak = true -- Prevent word breaks
@@ -48,7 +48,8 @@ opt.ignorecase = true -- ignore case when searching
 opt.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
 
 -- ### APPEARANCE ###
--- cursor line
+vim.o.showtabline = 0 -- hide bufferline
+
 opt.scrolloff = 6
 opt.cursorline = true -- highlight the current cursor line
 

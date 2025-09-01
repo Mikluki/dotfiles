@@ -20,13 +20,13 @@ return {
 				TODO = { icon = " ", color = "info" },
 				HACK = { icon = " ", color = "warning" },
 				WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+				FEAT = { icon = "󱐋", alt = { "FEATURE" } },
 				PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
 				NOTE = { icon = "󰍨 ", color = "hint", alt = { "INFO" } },
 				TAG = { icon = " ", color = "hint", alt = { "TAG" } },
 				TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
 			},
 		})
-
 		-- Set keymaps
 		local keymap = vim.keymap
 

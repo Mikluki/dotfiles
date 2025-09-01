@@ -1,13 +1,19 @@
 return {
 	"leath-dub/snipe.nvim",
 	keys = {
+		-- {
+		-- 	"<leader>ss",
+		-- 	function()
+		-- 		require("snipe").open_buffer_menu()
+		-- 	end,
+		-- 	desc = "Open Snipe buffer menu",
+		-- },
 		{
-			"<leader>ss",
-			-- "<leader><leader>",
+			"gs",
 			function()
 				require("snipe").open_buffer_menu()
 			end,
-			desc = "Open Snipe buffer menu",
+			desc = "Open Snipe buffer menu (alt key)",
 		},
 	},
 	opts = {
@@ -48,7 +54,7 @@ return {
 		hints = {
 			-- Charaters to use for hints (NOTE: make sure they don't collide with the navigation keymaps)
 			---@type string
-			dictionary = "sadflewcmpghio",
+			dictionary = "asdflgewchiopm",
 		},
 
 		navigate = {
@@ -66,26 +72,34 @@ return {
 			-- In case you changed your mind, provide a keybind that lets you
 			-- cancel the snipe and close the window.
 			---@type string|string[]
-			cancel_snipe = "<esc>",
+			cancel_snipe = { "<esc>", "q" },
 
 			-- Close the buffer under the cursor
 			-- Remove "j" and "k" from your dictionary to navigate easier to delete
 			close_buffer = "D",
 
 			-- Open buffer in vertical split
-			open_vsplit = "V",
+			open_vsplit = "<C-v>",
 
 			-- Open buffer in split, based on `vim.opt.splitbelow`
 			open_split = "H",
 
 			-- Change tag manually
-			change_tag = "C",
+			-- change_tag = "C",
 		},
-		-- The default sort used for the buffers
+		-- The default s--[[ o ]]rt used for the buffers
 		-- Can be any of:
 		--  "last" - sort buffers by last accessed
 		--  "default" - sort buffers by its number
 		--  fun(bs:snipe.Buffer[]):snipe.Buffer[] - custom sort function, should accept a list of snipe.Buffer[] as an argument and return sorted list of snipe.Buffer[]
-		sort = "default",
+		-- sort = "default",
+		sort = function(buffers)
+			table.sort(buffers, function(a, b)
+				local name_a = vim.fs.basename(a.name or "")
+				local name_b = vim.fs.basename(b.name or "")
+				return name_a:lower() < name_b:lower()
+			end)
+			return buffers
+		end,
 	},
 }

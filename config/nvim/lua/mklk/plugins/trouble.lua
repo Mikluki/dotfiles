@@ -10,7 +10,7 @@ return {
 				focus = true,
 				win = {
 					position = "right",
-					size = 0.4,
+					size = 0.3,
 				},
 			},
 		},
@@ -28,7 +28,7 @@ return {
 			desc = "Buffer Diagnostics (Trouble)",
 		},
 		{
-			"<leader>ds",
+			"<leader>xs",
 			"<cmd>Trouble symbols toggle<cr>",
 			desc = "Symbols (Trouble)",
 		},
@@ -38,7 +38,7 @@ return {
 			desc = "Symbols (Trouble)",
 		},
 		{
-			"<leader>cl",
+			"<leader>xl",
 			"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
 			desc = "LSP Definitions / references / ... (Trouble)",
 		},

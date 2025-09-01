@@ -40,16 +40,33 @@ return {
 					},
 				},
 			},
+			extensions = {
+				fzf = {},
+				aerial = {
+					col1_width = 4,
+					col2_width = 30,
+					format_symbol = function(symbol_path, filetype)
+						if filetype == "json" or filetype == "yaml" then
+							return table.concat(symbol_path, ".")
+						else
+							return symbol_path[#symbol_path]
+						end
+					end,
+					show_columns = "both",
+				},
+			},
 		})
 
+		-- ### Extensions ###
 		telescope.load_extension("fzf")
+		telescope.load_extension("aerial")
 
 		-- set keymaps
 		local keymap = vim.keymap -- for conciseness
 
 		local telescope_builtin = require("telescope.builtin")
 		keymap.set("n", "<leader>fx", "<cmd>Telescope diagnostics<cr>", { desc = "Find diagnostics worksapce" })
-		keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find buffers" })
+		keymap.set("n", "<leader>fB", "<cmd>Telescope buffers<cr>", { desc = "Find buffers" })
 
 		keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files in cwd" })
 		keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Find recent files" })
@@ -63,37 +80,45 @@ return {
 			telescope_builtin.find_files({ cwd = vim.fn.stdpath("config") })
 		end, { desc = "Find Neovim files" })
 
-		-- SEARCH FOR SYMBOLS
+		-- FIND LSP SYMBOLS
 		local symbol_filter = { -- Define symbols filter once to reuse
 			symbols = { "method", "function", "class" },
 			sorting_strategy = "ascending", -- Ensures order follows LSP
 		}
 
-		-- Map for document symbols
-		keymap.set("n", "<leader>fd", function()
-			-- Ensure we're working with the current buffer
-			vim.api.nvim_command("noautocmd normal! m`") -- Set a mark to return to
-			local current_buf = vim.api.nvim_get_current_buf()
-
-			-- Force telescope to use the current buffer
-			telescope_builtin.lsp_document_symbols(vim.tbl_extend("force", symbol_filter, {
-				bufnr = current_buf,
-			}))
-		end, { noremap = true, silent = true, desc = "Find LSP Document Symbols" })
-
 		keymap.set("n", "<leader>fD", function()
 			telescope_builtin.lsp_dynamic_workspace_symbols(symbol_filter)
 		end, { noremap = true, silent = true, desc = "Find LSP Workspace Symbols" })
 
-		-- SEARCH FILES INLCUDING THOSE IN GITIGNORE
+		-- GREP FOR SYMBOLS [Python]
+		keymap.set("n", "<leader>ps", function()
+			telescope_builtin.live_grep({
+				prompt_title = "Search Python Functions & Classes",
+				default_text = "^\\s*(def |class |async def )+",
+				additional_args = function()
+					return { "--pcre2" }
+				end,
+				file_ignore_patterns = { "__pycache__/", "%.pyc", ".git/" },
+			})
+		end, { desc = "Search Python symbols" })
+
+		-- GREP FILES INLCUDING THOSE IN GITIGNORE
 		keymap.set(
 			"n",
 			"<leader>fi",
 			"<cmd>Telescope find_files find_command=fd,--type,f,--hidden,--no-ignore<cr>",
-			{ desc = "Find ignored files" }
+			{ desc = "Grep with ignored files" }
 		)
 
-		-- SEARCH EXISTING MARKS
+		-- GREP OPEN BUFFERS
+		keymap.set("n", "<leader>fb", function()
+			require("telescope.builtin").live_grep({
+				grep_open_files = true,
+				prompt_title = "Live Grep in Open Files",
+			})
+		end, { desc = "Grep open buffers" })
+
+		-- GREP EXISTING MARKS
 		keymap.set("n", "<leader>fm", function()
 			telescope_builtin.marks()
 		end, { desc = "Find existing marks" })
@@ -111,7 +136,7 @@ return {
 			}))
 		end, { desc = "[/] Find in current buffer" })
 
-		-- GIT HISTORY SEARCH
+		-- GIT HISTORY GREP
 		vim.api.nvim_create_user_command("GitHistoryFile", function()
 			require("telescope.builtin").git_bcommits({
 				layout_strategy = "horizontal",

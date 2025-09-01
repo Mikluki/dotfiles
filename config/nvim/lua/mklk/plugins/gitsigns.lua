@@ -20,7 +20,9 @@ return {
 
 				-- Navigation
 				map("n", "<leader>jh", gs.next_hunk, "Next Hunk")
+				map("n", "<leader>hn", gs.next_hunk, "Next Hunk")
 				map("n", "<leader>kh", gs.prev_hunk, "Prev Hunk")
+				map("n", "<leader>hp", gs.prev_hunk, "Prev Hunk")
 
 				-- Actions (grouped by prefix for better organization)
 				-- Staging/unstaging
@@ -41,7 +43,7 @@ return {
 				end, "Reset selected lines")
 
 				-- Preview and info
-				map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
+				map("n", "<leader>hf", gs.preview_hunk, "Preview hunk") -- "f" for float
 				map("n", "<leader>hb", function()
 					gs.blame_line({ full = true })
 				end, "Blame line")

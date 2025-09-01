@@ -44,6 +44,25 @@ return {
 				-- Highlight for the bullet icon
 				highlight = "RenderMarkdownBullet",
 			},
+			checkbox = {
+				enabled = true,
+				render_modes = false,
+				right_pad = 1,
+				unchecked = {
+					icon = "󰄱 ",
+					highlight = "RenderMarkdownUnchecked",
+					scope_highlight = nil,
+				},
+				checked = {
+					icon = "󰱒 ",
+					highlight = "RenderMarkdownChecked",
+					scope_highlight = "@markup.strikethrough",
+				},
+				custom = {
+					todo = { raw = "[-]", rendered = "󰥔 ", highlight = "RenderMarkdownTodo", scope_highlight = nil },
+				},
+			},
+
 			-- -- WITH BACKGROUND COLOR
 			-- heading = {
 			-- 	sign = false,

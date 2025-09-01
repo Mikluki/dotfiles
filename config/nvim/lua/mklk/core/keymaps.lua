@@ -28,18 +28,18 @@ keymap.set("n", "<leader>jj", "<cmd>cnext<CR>", { desc = "Quickfix Next" })
 keymap.set("n", "<leader>cn", "<cmd>cnext<CR>", { desc = "Quickfix Next" })
 -- prev item
 keymap.set("n", "<leader>kk", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
-keymap.set("n", "<leader>cp", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
+keymap.set("n", "<leader>cb", "<cmd>cprev<CR>", { desc = "Quickfix Prev" })
 -- first item
-keymap.set("n", "<leader>cf", "<cmd>cfirst<CR>", { desc = "Quickfix First" })
+keymap.set("n", "<leader>cF", "<cmd>cfirst<CR>", { desc = "Quickfix First" })
 -- last item
 keymap.set("n", "<leader>cl", "<cmd>clast<CR>", { desc = "Quickfix Last" })
 -- cdo
-keymap.set("n", "<leader>cd", ":cdo ", { desc = "Quickfix Do" })
+keymap.set("n", "<leader>cD", ":cdo ", { desc = "Quickfix Do" })
 -- open & close
 keymap.set("n", "<leader>co", "<cmd>copen<CR>", { desc = "Quickfix Open" })
-keymap.set("n", "<leader>cc", "<cmd>cclose<CR>", { desc = "Quickfix Close" })
+keymap.set("n", "<leader>cq", "<cmd>cclose<CR>", { desc = "Quickfix Close" })
 
--- ### BUFFER SAVE & CLOSE ###
+-- ### SAVE & CLOSE ###
 -- keymap.set("n", "<leader>e", "<cmd>Explore<CR>", { desc = "Explorer" })
 keymap.set("n", "<leader>w", "<cmd>wa<CR>", { desc = "Save all" })
 keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Close buffer" })
@@ -52,8 +52,8 @@ keymap.set("n", "<leader>X", "<cmd>bufdo bd!<CR>", { desc = "Delete all buffers"
 keymap.set("n", "<leader>sn", "<cmd>vnew<CR>", { desc = "Empty split on the right" }) -- split window vertically
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
-keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
-keymap.set("n", "<leader>sd", "<cmd>tabnew %<CR>", { desc = "Duplicate current tab" }) --  move current buffer to new tab
+keymap.set("n", "<leader>sd", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
+-- keymap.set("n", "<leader>sd", "<cmd>tabnew %<CR>", { desc = "Duplicate current tab" }) --  move current buffer to new tab
 
 -- Resize splits using arrow keys + Control
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
@@ -109,29 +109,75 @@ keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 -- keymap.set("n", "<leader>td", "<cmd>tabnew %<CR>", { desc = "Duplicate current tab" }) --  move current buffer to new tab
 
-keymap.set("n", "<M-k>", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
-keymap.set("n", "<M-j>", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
-
+-- keymap.set("n", "<M-k>", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
+-- keymap.set("n", "<M-j>", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 -- Keymaps to jump to tabs
-vim.api.nvim_set_keymap("n", "<leader>1", "1gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>2", "2gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>3", "3gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>4", "3gt", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "<leader>1", "1gt", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "<leader>2", "2gt", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "<leader>3", "3gt", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "<leader>4", "3gt", { noremap = true, silent = true })
+
+-- ### BUFFERS & NAVIAGTION ###
+local function safe_buffer_delete()
+	-- Close Trouble symbols if it's open
+	vim.cmd("Trouble symbols close")
+	-- Then delete the buffer
+	vim.cmd("bd")
+end
+
+keymap.set("n", "<leader>db", safe_buffer_delete, { desc = "Buffer delete" })
+keymap.set("n", "<leader>sx", safe_buffer_delete, { desc = "Buffer delete" })
+
+keymap.set("n", "<M-k>", "<cmd>bnext<CR>", { desc = "Buffer next" }) --  go to next tab
+keymap.set("n", "<M-j>", "<cmd>bprev<CR>", { desc = "Buffer previous" }) --  go to previous tab
+
+vim.keymap.set("n", "<M-f>", "<C-^>", { desc = "Switch to previous buffer" })
+vim.keymap.set("n", "<leader>ss", "<C-^>", { desc = "Switch to previous buffer" })
+
+vim.keymap.set("n", "<leader>bt", function()
+	local val = vim.o.showtabline == 0 and 2 or 0
+	vim.o.showtabline = val
+end, { desc = "Toggle BufferTabline" })
+
+-- ## Close all buffers except current
+vim.keymap.set("n", "<leader>bB", ":%bd|e#|bd#<CR>", { desc = "Close all buffers except current" })
+
+-- ## Jump to N-th buffer (listed buffers only)
+for i = 1, 9 do
+	vim.keymap.set("n", "<leader>" .. i, function()
+		local buffers = vim.fn.getbufinfo({ buflisted = 1 })
+		if buffers[i] then
+			vim.api.nvim_set_current_buf(buffers[i].bufnr)
+		end
+	end, { noremap = true, silent = true })
+end
 
 -- ## REPLACE SELECTION ##
-keymap.set(
-	"v",
-	"<C-r>",
-	'"hy:%s/<C-r>h//gc<left><left><left>',
-	{ noremap = true, silent = true, desc = "substitute selection" }
-)
-keymap.set(
-	"v",
-	"<leader>s",
-	'"hy:%s/<C-r>h//gc<left><left><left>',
-	{ noremap = true, silent = true, desc = "substitute selection" }
-)
+-- replace in current buffer
+keymap.set("v", "<leader>s", function()
+	-- Yank selection
+	vim.cmd('normal! "hy')
+	-- Get yanked text
+	local pattern = vim.fn.getreg("h")
+	-- Construct command and feed it as keystrokes
+	local cmd = string.format(":%%s/\\V%s//gc", pattern)
+	-- Feed the command and position cursor before the replacement part
+	vim.fn.feedkeys(cmd .. string.rep(vim.api.nvim_replace_termcodes("<Left>", true, false, true), 3))
+end, { noremap = true, silent = true, desc = "substitute selection" })
 
+-- replace in all buffers
+keymap.set("v", "<leader>bs", function()
+	-- Yank selection
+	vim.cmd('normal! "hy')
+	-- Get yanked text
+	local pattern = vim.fn.getreg("h")
+	-- Construct command and feed it as keystrokes so user can type replacement
+	local cmd = string.format(":bufdo %%s/\\V%s//gc", pattern)
+	-- Feed the command and position cursor before the replacement part
+	vim.fn.feedkeys(cmd .. string.rep(vim.api.nvim_replace_termcodes("<Left>", true, false, true), 3))
+end, { noremap = true, silent = true, desc = "Substitute selection in all buffers" })
+
+-- ## MACROS ##
 -- Run macro bound to q with Q
 keymap.set("n", "Q", "@q", opts)
 
@@ -168,8 +214,8 @@ keymap.set("n", "n", "nzzzv", opts)
 keymap.set("n", "N", "Nzzzv", opts)
 
 -- Keep the cursor in the same place when joining or breaking lines
+keymap.set("n", "K", "i<cr><esc>k$", { noremap = true, silent = true, desc = "Break line" })
 keymap.set("n", "J", "mzgJ`z", { noremap = true, silent = true, desc = "Join lines" })
-keymap.set("n", "K", "mza<CR><Esc>`z", { noremap = true, silent = true, desc = "Break line" })
 
 -- #######################
 -- ##### CUSTOM UTIL #####
@@ -179,7 +225,7 @@ keymap.set("n", "K", "mza<CR><Esc>`z", { noremap = true, silent = true, desc = "
 -- Delete current file in buffer with confirmation and clse buffer
 keymap.set(
 	"n",
-	"<Leader>df",
+	"<Leader>D",
 	[[:lua DeleteCurrentFile()<CR>]],
 	{ noremap = true, silent = true, desc = "Delete current File" }
 )
@@ -261,14 +307,89 @@ function MdFormatLatex()
 end
 
 -- Keymap for normal mode: apply on whole file
-vim.keymap.set(
+keymap.set(
 	{ "v", "n" },
 	"<leader>mf",
 	"<cmd>lua MdFormatLatex()<CR>",
 	{ noremap = true, silent = true, desc = "Format MD math to Tex math" }
 )
 
------------------------------------------
+---===================================---
+-- COMPILE LATEX TO PDF using pdflatex in tmux pane
+function TexCompilePdflatex()
+	-- Check if current file is a .tex file
+	local current_file = vim.fn.expand("%")
+	if not string.match(current_file, "%.tex$") then
+		print("Error: Current file is not a .tex file")
+		return
+	end
+
+	local input_file = vim.fn.expand("%:p") -- Get full path of the current file
+	local input_dir = vim.fn.expand("%:p:h") -- Get directory of the current file
+	local filename = vim.fn.expand("%:t") -- Get filename with extension
+
+	-- Check if we're in a tmux session
+	local tmux_check = vim.fn.system("tmux display-message 2>/dev/null")
+	if vim.v.shell_error ~= 0 then
+		print("Error: Not in a tmux session. Please run vim inside tmux to use this function.")
+		return
+	end
+
+	-- Check if right pane exists by counting panes
+	local pane_count = vim.fn.system("tmux list-panes | wc -l")
+	if vim.v.shell_error ~= 0 then
+		print("Error: Failed to list tmux panes")
+		return
+	end
+
+	-- Get current pane index before doing anything
+	local current_pane = vim.fn.system("tmux display-message -p '#{pane_index}'")
+	if vim.v.shell_error ~= 0 then
+		print("Error: Failed to get current pane index")
+		return
+	end
+	current_pane = current_pane:gsub("%s+", "") -- trim whitespace
+
+	local right_pane_exists = tonumber(pane_count) > 1
+
+	-- Create right pane if it doesn't exist
+	if not right_pane_exists then
+		vim.fn.system("tmux split-window -h")
+		if vim.v.shell_error ~= 0 then
+			print("Error: Failed to create tmux pane")
+			return
+		end
+		-- Switch back to the original pane
+		vim.fn.system("tmux select-pane -t " .. current_pane)
+	end
+
+	-- Send commands to right pane without switching focus
+	local rightmost_pane = vim.fn.system("tmux list-panes -F '#{pane_index}' | tail -1")
+	if vim.v.shell_error ~= 0 then
+		print("Error: Failed to get rightmost pane")
+		return
+	end
+
+	rightmost_pane = rightmost_pane:gsub("%s+", "") -- trim whitespace
+
+	-- Send commands to the specific pane without switching focus
+	vim.fn.system("tmux send-keys -t " .. rightmost_pane .. " 'cd " .. vim.fn.shellescape(input_dir) .. "' Enter")
+	vim.fn.system("tmux send-keys -t " .. rightmost_pane .. " 'pdflatex " .. vim.fn.shellescape(filename) .. "' Enter")
+
+	print("Running pdflatex on " .. filename .. " in tmux pane...")
+end
+
+-- -- Keymap for LaTeX compilation
+-- vim.keymap.set("n", "<leader>lcp", TexCompilePdflatex, {
+-- 	desc = "Compile LaTeX to PDF using pdflatex in tmux pane",
+-- })
+
+-- Create user commands to make functions accessible from : menu
+vim.api.nvim_create_user_command("TexCompilePdflatex", TexCompilePdflatex, {
+	desc = "Compile LaTeX to PDF using pdflatex (single run)",
+})
+
+---===================================---
 -- COMPILE MARKDOWN TO PDF standard arial
 function MdCompileArial()
 	local input_file = vim.fn.expand("%:p") -- Get full path of the current file
@@ -472,39 +593,27 @@ end
 vim.api.nvim_set_keymap("n", "<leader>ob", ":lua open_url_in_brave()<CR>", { noremap = true, silent = true })
 
 -- TOGGLE LINE WRAPPING
-keymap.set("n", "<leader>tw", function()
+keymap.set("n", "<leader>wt", function()
 	vim.wo.wrap = not vim.wo.wrap
 	print("Line wrapping " .. (vim.wo.wrap and "enabled" or "disabled"))
-end, { desc = "Toggle line wrapping" })
+end, { desc = "Toggle wrapping" })
 
--- Yank filename of current file
-keymap.set(
-	"n",
-	"<leader>yf",
-	[[:let @+ = expand('%:t')<CR>]],
-	{ noremap = true, silent = true, desc = "Yank filename of the current file" }
-)
--- Yank path of current file
-keymap.set(
-	"n",
-	"<leader>yp",
-	[[:let @+ = expand('%:p')<CR>]],
-	{ noremap = true, silent = true, desc = "Yank path of the current file" }
-)
--- Yank relative path of current file
-keymap.set(
-	"n",
-	"<leader>yr",
-	[[:let @+ = expand('%')<CR>]],
-	{ noremap = true, silent = true, desc = "Yank relative path of the current file" }
-)
--- Yank path of current file dir
-keymap.set(
-	"n",
-	"<leader>yd",
-	[[:let @+ = expand('%:p:h')<CR>]],
-	{ noremap = true, silent = true, desc = "Yank path of the current dir" }
-)
+-- YAZI like mappings
+local mappings = {
+	{ lhs = "<leader>cf", expr = "%:t", desc = "Yank filename of the current file" },
+	{ lhs = "<leader>cc", expr = "%:p", desc = "Yank path of the current file" },
+	{ lhs = "<leader>cr", expr = "%", desc = "Yank relative path of the current file" },
+	{ lhs = "<leader>cd", expr = "%:p:h", desc = "Yank path of the current dir" },
+}
+
+for _, map in ipairs(mappings) do
+	keymap.set(
+		"n",
+		map.lhs,
+		[[:let @+ = expand("]] .. map.expr .. [[")<CR>]],
+		{ noremap = true, silent = true, desc = map.desc }
+	)
+end
 
 -- OPEN NEMO AT CURRENT FILE
 keymap.set(
@@ -541,12 +650,6 @@ function OpenTmuxPaneAndRunPython()
 	-- Switch focus to the newly created pane
 	vim.fn.system("tmux select-pane -D")
 end
-
--- INSERT IGNORE FOR PYRIGHT AT EOL
-keymap.set("n", "<leader>li", function()
-	local line = vim.fn.getline(".")
-	vim.fn.setline(vim.fn.line("."), line .. "    # pyright: ignore")
-end, { noremap = true, silent = true, desc = "Append '# pyright: ignore' at the end of the line" })
 
 -- SEARCH SELECTION IN SCHOLAR
 keymap.set(

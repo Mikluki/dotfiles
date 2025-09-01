@@ -8,10 +8,10 @@ return {
 	},
 	config = function()
 		local lspconfig = require("lspconfig") -- import lspconfig plugin
-		local mason_lspconfig = require("mason-lspconfig") -- import mason_lspconfig plugin
 		local cmp_nvim_lsp = require("cmp_nvim_lsp") -- import cmp-nvim-lsp plugin
 		local keymap = vim.keymap -- for conciseness
 
+		-- Create the autocmd for LSP keybindings
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
@@ -53,7 +53,7 @@ return {
 				keymap.set("n", "<leader>dr", "<cmd>Telescope diagnostics<CR>", opts) -- show diagnostics for workspace
 
 				opts.desc = "Diagnostics Line show"
-				keymap.set("n", "<leader>dl", vim.diagnostic.open_float, opts) -- show diagnostics for line
+				keymap.set("n", "<leader>df", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
 				opts.desc = "Go to previous diagnostic"
 				keymap.set("n", "<leader>dp", function()
@@ -115,7 +115,6 @@ return {
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
 		-- Update diagnostic signs in the sign column using the new API
-		-- Set diagnostic signs using the new API
 		local signs = {
 			[vim.diagnostic.severity.ERROR] = " ",
 			[vim.diagnostic.severity.WARN] = " ",
@@ -129,178 +128,190 @@ return {
 			},
 		})
 
-		-- #### LSP SETUP #### --
-		mason_lspconfig.setup_handlers({
-			-- default handler for installed servers
-			function(server_name)
-				lspconfig[server_name].setup({
-					capabilities = capabilities,
-				})
-			end,
+		-- #### LSP SETUP - DIRECT METHOD #### --
+		-- Define the global toggle diagnostics function
+		_G.ToggleDiagnostics = function()
+			local diagnostics_visible = vim.g.diagnostics_visible or true
+			vim.g.diagnostics_visible = not diagnostics_visible
+			if vim.g.diagnostics_visible then
+				vim.diagnostic.enable(true) -- Enable diagnostics
+				print("Diagnostics enabled")
+			else
+				vim.diagnostic.enable(false) -- Disable diagnostics
+				print("Diagnostics disabled")
+			end
+		end
 
-			["ruff"] = function()
-				-- 	-- configure Ruff language server
-				-- 	lspconfig["ruff"].setup({
-				-- 		capabilities = capabilities,
-				-- 		on_attach = function(client, bufnr)
-				-- 			-- disable all positional features
-				-- 			client.server_capabilities.definitionProvider = false
-				-- 			client.server_capabilities.hoverProvider = false
-				-- 			client.server_capabilities.referencesProvider = false
-				-- 			client.server_capabilities.renameProvider = false
-				-- 			client.server_capabilities.documentFormattingProvider = false
-				-- 			client.server_capabilities.codeActionProvider = false
-				-- 		end,
-				-- 		-- Optional settings - you can adjust these based on your preferences
-				-- 		settings = {
-				-- 			-- You can add specific Ruff settings here if needed
-				-- 		},
-				-- 	})
-			end,
+		-- Define custom root dir detection
+		local function get_python_root(startpath)
+			local git_dir = vim.fs.find({ ".git" }, { path = startpath, upward = true })[1]
+			local project_dir = vim.fs.find(
+				{ "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt" },
+				{ path = startpath, upward = true }
+			)[1]
+			return vim.fs.dirname(git_dir or project_dir or startpath)
+		end
 
-			["pyright"] = function()
-				lspconfig["pyright"].setup({
-					capabilities = capabilities,
-					settings = {
-						-- pyright = {
-						-- 	disableOrganizeImports = true,
-						-- 	disableTaggedHints = true,
-						-- },
-						-- python = {
-						-- 	analysis = {
-						-- 		diagnosticSeverityOverrides = {
-						-- 			-- https://github.com/microsoft/pyright/blob/main/docs/configuration.md#type-check-diagnostics-settings
-						-- 			reportUndefinedVariable = "none",
-						-- 		},
-						-- 	},
-						-- },
+		-- Pyright
+		lspconfig.pyright.setup({
+			capabilities = capabilities,
+			root_dir = get_python_root,
+			settings = {
+				python = {
+					analysis = {
+						autoSearchPaths = true,
+						diagnosticMode = "openFilesOnly",
+						useLibraryCodeForTypes = true,
 					},
-				})
-			end,
-
-			["rust_analyzer"] = function()
-				lspconfig["rust_analyzer"].setup({
-					capabilities = capabilities,
-					filetypes = { "rust" },
-					root_dir = function(fname)
-						local util = require("lspconfig.util")
-
-						-- First try to find Cargo.toml
-						local cargo_root = util.root_pattern("Cargo.toml")(fname)
-						if cargo_root then
-							return cargo_root
-						end
-
-						-- Then try to find .git using vim.fs (modern Neovim way)
-						local git_dir = vim.fs.find(".git", { path = fname, upward = true })[1]
-						if git_dir then
-							return vim.fs.dirname(git_dir)
-						end
-
-						-- Fallback to current working directory (scratch file)
-						return vim.fn.getcwd()
-					end,
-					settings = {
-						["rust-analyzer"] = {
-							cargo = {
-								allFeatures = true,
-							},
-							inlayHints = {
-								lifetimeElisionHints = {
-									enable = true,
-									useParameterNames = true,
-								},
-							},
-						},
-					},
-				})
-			end,
-
-			["svelte"] = function()
-				-- configure svelte server
-				lspconfig["svelte"].setup({
-					capabilities = capabilities,
-					on_attach = function(client, bufnr)
-						vim.api.nvim_create_autocmd("BufWritePost", {
-							pattern = { "*.js", "*.ts" },
-							callback = function(ctx)
-								-- Here use ctx.match instead of ctx.file
-								client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-							end,
-						})
-					end,
-				})
-			end,
-
-			["ts_ls"] = function()
-				lspconfig.ts_ls.setup({
-					capabilities = capabilities,
-					filetypes = {
-						"javascript",
-						"javascriptreact",
-						"javascript.jsx",
-						"typescript",
-						"typescriptreact",
-						"typescript.tsx",
-					},
-					root_dir = function(fname)
-						return require("lspconfig.util").root_pattern("tsconfig.json")(fname)
-							or require("lspconfig.util").root_pattern("package.json", "jsconfig.json", ".git")(fname)
-					end,
-					single_file_support = true,
-					on_attach = function(client, bufnr)
-						-- Disable built-in formatting in favor of external formatters like Prettier
-						client.server_capabilities.documentFormattingProvider = false
-					end,
-				})
-			end,
-
-			["eslint"] = function()
-				-- configure ESLint server
-				lspconfig["eslint"].setup({
-					capabilities = capabilities,
-					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
-					on_attach = function(client, bufnr)
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							buffer = bufnr,
-							command = "EslintFixAll", -- Auto-fix on save
-						})
-					end,
-				})
-			end,
-
-			["lua_ls"] = function()
-				-- configure lua server (with special settings)
-				lspconfig["lua_ls"].setup({
-					capabilities = capabilities,
-					settings = {
-						Lua = {
-							-- make the language server recognize "vim" global
-							diagnostics = {
-								globals = { "vim" },
-							},
-							completion = {
-								callSnippet = "Replace",
-							},
-						},
-					},
-				})
-			end,
-
-			-- ["graphql"] = function()
-			--   -- configure graphql language server
-			--   lspconfig["graphql"].setup({
-			--     capabilities = capabilities,
-			--     filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-			--   })
-			-- end,
-			-- ["emmet_ls"] = function()
-			--   -- configure emmet language server
-			--   lspconfig["emmet_ls"].setup({
-			--     capabilities = capabilities,
-			--     filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-			--   })
-			-- end,
+				},
+			},
 		})
+
+		-- -- Basedpyright
+		-- lspconfig.basedpyright.setup({
+		-- 	capabilities = capabilities,
+		-- 	root_dir = get_python_root,
+		-- 	settings = {
+		-- 		python = {
+		-- 			analysis = {
+		-- 				autoSearchPaths = true,
+		-- 				useLibraryCodeForTypes = true,
+		-- 			},
+		-- 		},
+		-- 	},
+		-- })
+
+		-- Ruff
+		-- lspconfig.ruff.setup({
+		-- 		capabilities = capabilities,
+		-- 		on_attach = function(client, bufnr)
+		-- 			-- disable all positional features
+		-- 			client.server_capabilities.definitionProvider = false
+		-- 			client.server_capabilities.hoverProvider = false
+		-- 			client.server_capabilities.referencesProvider = false
+		-- 			client.server_capabilities.renameProvider = false
+		-- 			client.server_capabilities.documentFormattingProvider = false
+		-- 			client.server_capabilities.codeActionProvider = false
+		-- 		end,
+		-- 		-- Optional settings - you can adjust these based on your preferences
+		-- 		settings = {
+		-- 			-- You can add specific Ruff settings here if needed
+		-- 		},
+		-- 	})
+		-- })
+
+		-- Rust Analyzer
+		lspconfig.rust_analyzer.setup({
+			capabilities = capabilities,
+			filetypes = { "rust" },
+			root_dir = function(fname)
+				local util = require("lspconfig.util")
+
+				-- First try to find Cargo.toml
+				local cargo_root = util.root_pattern("Cargo.toml")(fname)
+				if cargo_root then
+					return cargo_root
+				end
+
+				-- Then try to find .git using vim.fs (modern Neovim way)
+				local git_dir = vim.fs.find(".git", { path = fname, upward = true })[1]
+				if git_dir then
+					return vim.fs.dirname(git_dir)
+				end
+
+				-- Fallback to current working directory (scratch file)
+				return vim.fn.getcwd()
+			end,
+			settings = {
+				["rust-analyzer"] = {
+					cargo = {
+						allFeatures = true,
+					},
+					inlayHints = {
+						lifetimeElisionHints = {
+							enable = true,
+							useParameterNames = true,
+						},
+					},
+				},
+			},
+		})
+
+		-- Svelte
+		lspconfig.svelte.setup({
+			capabilities = capabilities,
+			on_attach = function(client, bufnr)
+				vim.api.nvim_create_autocmd("BufWritePost", {
+					pattern = { "*.js", "*.ts" },
+					callback = function(ctx)
+						-- Here use ctx.match instead of ctx.file
+						client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+					end,
+				})
+			end,
+		})
+
+		-- TypeScript
+		lspconfig.ts_ls.setup({ -- Note: changed from ts_ls to tsserver which is the correct server name
+			capabilities = capabilities,
+			filetypes = {
+				"javascript",
+				"javascriptreact",
+				"javascript.jsx",
+				"typescript",
+				"typescriptreact",
+				"typescript.tsx",
+			},
+			root_dir = function(fname)
+				return require("lspconfig.util").root_pattern("tsconfig.json")(fname)
+					or require("lspconfig.util").root_pattern("package.json", "jsconfig.json", ".git")(fname)
+			end,
+			single_file_support = true,
+			on_attach = function(client, bufnr)
+				-- Disable built-in formatting in favor of external formatters like Prettier
+				client.server_capabilities.documentFormattingProvider = false
+			end,
+		})
+
+		-- ESLint
+		lspconfig.eslint.setup({
+			capabilities = capabilities,
+			filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+			on_attach = function(client, bufnr)
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					buffer = bufnr,
+					command = "EslintFixAll", -- Auto-fix on save
+				})
+			end,
+		})
+
+		-- Lua
+		lspconfig.lua_ls.setup({
+			capabilities = capabilities,
+			settings = {
+				Lua = {
+					-- make the language server recognize "vim" global
+					diagnostics = {
+						globals = { "vim" },
+					},
+					completion = {
+						callSnippet = "Replace",
+					},
+				},
+			},
+		})
+
+		-- Graphql
+		-- lspconfig.graphql.setup({
+		--     capabilities = capabilities,
+		--     filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+		--   })
+
+		-- Emmet
+		-- lspconfig.emmet_ls.setup({
+		--     capabilities = capabilities,
+		--     filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+		--   })
+		-- end,
 	end,
 }
